@@ -1,0 +1,44 @@
+div {
+  box-sizing: border-box;
+}
+
+.App {
+  text-align: center;
+}
+
+.main-bg{
+
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  background-image: url('/img/bg-1.png');
+}
+
+/*애니메이션*/
+.start {
+  opacity: 0;
+}
+.end {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+.scaleStart {
+  transform: scale(0);
+  transform-origin: center center;
+}
+.scaleEnd {
+  transform: scale(1);
+  transform-origin: center center;
+  transition: all 0.5s;
+}
+
+/*sticky 이동을 위한 height 속성추가*/
+.sidebar-wrapper{
+  height: 100%;
+}
+
+
+/*헤더 이름표사*/
+.headerName{
+  color: white;
+}
