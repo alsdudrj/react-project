@@ -7,20 +7,21 @@ import { useLike } from "../hooks/Like";
 
 
 const Detail = (props) => {
-    
-    let {id} = useParams();     //주소로 접속시 url 파라미터를 받아옴
+    let {id} = useParams();                         //주소로 접속시 url 파라미터를 받아옴
     let item = props.shoes.find((v) => v.id == id); //서버에서 받은 data중 id요소를 이용하여 파라미터 번호에 맞는 array를 찾아옴
 
-    let [alert, setAlert] = useState(true); //일정시간 후 없어질 html의 display boolean요소
-
-    let [numAlert, setNumAlert] = useState(false); //인풋창에 문자 넣으면 Alert 띄우기
+    let [alert, setAlert] = useState(true);         //일정시간 후 없어질 html의 display boolean요소
+    let [numAlert, setNumAlert] = useState(false);  //인풋창에 문자 넣으면 Alert 띄우기
     let [inputValue, setInputValue] = useState(""); //인풋창에 들어간 값 저장
 
-    let [like, addLike] = useLike(); //custom hook을 불러옴
+    let [like, addLike] = useLike();                //custom hook을 불러옴
+    let dispatch = useDispatch();                   //redux state변경함수를 사용하기 위해 불러옴
 
-    let dispatch = useDispatch(); //redux state변경함수를 사용하기 위해 불러옴
+    let [fade, setFade] = useState('');             //애니메이션을 주기위한 className state
 
-    /*html렌더링 이후 타이머 작동*/
+
+    /* ================================ */
+    /* ====html렌더링 이후 타이머 작동==== */
     useEffect(() => {
             window.scrollTo(0, 0); //화면 제일위로 이동
 
@@ -35,9 +36,10 @@ const Detail = (props) => {
             }, 2000);
         }, []);
 
-    /*인풋박스에 숫자말고 다른거 띄우면 욕하기*/
+    /* ========================================== */
+    /* ====인풋박스에 숫자말고 다른거 띄우면 욕하기==== */
     useEffect(() => {
-        // if (inputValue === "") return; //이미 썼으면 공백 일때도 욕뜨게
+        // if (inputValue === "") return;       //text 출력 후 input Value가 없어도 text 유지
 
         if (Number.isNaN(Number(inputValue))){  //inputValue를 숫자로 변환하고 숫자가 아니면 NaN 반환 
                                                 //(Number.isNaN은 형변환을 하지않고 undefined도 false를 반환해서 정확한 체크 가능)
@@ -45,26 +47,39 @@ const Detail = (props) => {
         }else setNumAlert(false);
     }, [inputValue]);
 
-    /*url파라미터가 data에 없는 상품으로 들어왔을때 보여줄 내용*/
+    /* =========================================================== */
+    /* ====url파라미터가 data에 없는 상품으로 들어왔을때 보여줄 내용 ==== */
     if (!item) {
         return <div>상품을 찾을 수 없습니다.</div>;
     }
 
-    /*detail페이지 접속시 해당페이지의 상품 id를 localStorage에 넣음*/
+    /* ================================================================ */
+    /* ====detail페이지 접속시 해당페이지의 상품 id를 localStorage에 넣음==== */
     useEffect(() => {
         let localItem = JSON.parse(localStorage.getItem('watchItem')) || [];
         localItem.unshift(item.id)
 
-        let set = [...new Set(localItem)]; //배열 중복 제거
-        set = set.slice(0, 5); //배열을 5개까지만 저장
+        let set = [...new Set(localItem)];  //배열 중복 제거
+        set = set.slice(0, 5);              //배열을 5개까지만 저장
 
         localStorage.setItem('watchItem', JSON.stringify(set));
     }, [item.id])
 
+    /* ===================== */
+    /* ====애니메이션 추가==== */
+    useEffect(() => {
+        window.scrollTo(0, 0);                              //화면 제일위로 이동
+
+        let a = setTimeout(() => { setFade('end') }, 10);   //detail페이지 접속시 detail페이지를 감싼 div에 애니메이션 class 추가
+
+        return () => { clearTimeout(a); setFade(''); }      //페이지 로드전 타이머 초기화 className 초기화
+    }, [location.pathname]);                                //URL 주소가 변경될 때마다 실행
+
 
     return(
         <>
-            <div className="container">
+            <div className={`container start ${fade}`}> {/*애니메이션 추가*/}
+                
                 {/*일정 시간 후 없어지는 요소*/}
                 {alert == true ? 
                     <div className="alert alert-warning" id="sale">

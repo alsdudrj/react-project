@@ -10,7 +10,7 @@ import { createContext, useEffect, useState, lazy } from 'react';
 import Sidebar from './routes/Sidebar.jsx';
 import { Col, Container, Row } from 'react-bootstrap';
 import Umm from './routes/umm.jsx';
-// import DetailPage from './components/DetailPage.jsx';
+// import Detail from './routes/Detail.jsx';
 // import Cart from './routes/Cart.jsx';
 const Detail = lazy(() => import('./routes/Detail.jsx')); //lazy방식 import
 const Cart = lazy(() => import('./routes/Cart.jsx'));
@@ -25,7 +25,7 @@ function App() {
 
   let [mainCount, setMainCount] = useState(0); //메인페이지 더보기 클릭횟수 -> AddItem까지 props 시켜줌
 
-  let [fade, setFade] = useState(''); //애니메이션을 주기위한 className state
+  
   let location = useLocation();     //현재 URL 정보를 받아옴
 
   /*홈페이지 첫 접속시 localStorage에 본 상품 배열 생성*/
@@ -35,15 +35,6 @@ function App() {
     }
   },[]);
 
-  /*전체 페이지 애니메이션 추가*/
-  useEffect(() => {
-    window.scrollTo(0, 0); //화면 제일위로 이동
-
-    let a = setTimeout(() => { setFade('end') }, 10); //detail페이지 접속시 detail페이지를 감싼 div에 애니메이션 class 추가
-
-    return () => { clearTimeout(a); setFade(''); } //페이지 로드전 타이머 및 className 초기화
-  }, [location.pathname]);  //URL 주소가 변경될 때마다 실행
-
   return (
     <>
       <Header/>
@@ -51,7 +42,7 @@ function App() {
       <Container fluid className='p-0'>
           <Row>
             <Col md={11}> {/*sticky 확인을 위해 150vh 추가*/}
-              <div className={`App start ${fade}`}> {/*모든 페이지 애니메이션 추가*/}
+              <div className="App">
                 <Routes>
                   <Route path="/" 
                   element={<Home 

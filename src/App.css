@@ -32,6 +32,7 @@ div {
   transition: all 0.5s;
 }
 
+
 /*sticky 이동을 위한 height 속성추가*/
 .sidebar-wrapper{
   height: 100%;
