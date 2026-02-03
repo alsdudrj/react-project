@@ -1,20 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useUsername } from "../hooks/Username";
+import LoginForm from "../components/LoginForm";
 
-const Header = () => {
+const Header = ({showLogin, setShowLogin}) => {
     let navigate = useNavigate();   //URL 이동시 html표시를 도와줌
-
     let username = useUsername(); //coustom hook을 불러옴
-
-    let result = useQuery({ //Tanstack Query 사용
-        queryKey: ['getName'],
-        queryFn: () => 
-            axios.get('https://codingapple1.github.io/userdata.json')
-            .then(a => a.data )
-    })
 
     return(
         <>
@@ -25,10 +18,12 @@ const Header = () => {
                 <Nav className="me-auto">
                     <Nav.Link onClick={() => { navigate('/cart')}}>Cart</Nav.Link>
                 </Nav>
-                <Nav className="ms-auto headerName" style={{ width: "20%", textAlign: "right" }}>
-                    { result.isPending && '로딩중'}
-                    { result.isError && '못불러옴'}
-                    { result.isSuccess && <p>반갑다 {result.data.name}</p>}
+                <Nav className="ms-auto headerName" style={{ width: "auto", paddingRight: "15%", textAlign: "right" }}>
+                    <div className="login-anchor">
+                        <Button variant="outline-light" onClick={() => setShowLogin(!showLogin)}>로그인</Button>
+
+                        {showLogin && <LoginForm setShowLogin={setShowLogin}/>}
+                    </div>
                 </Nav>
             </Container>
         </Navbar>

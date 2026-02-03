@@ -16,11 +16,11 @@ const Home = (props) => {
         return () => { clearTimeout(a); setFade(''); } //페이지 로드전 타이머 초기화 className 초기화
     }, [location.pathname]);  //URL 주소가 변경될 때마다 실행
 
-    
+
     return(
         <>
         <div className={`start ${fade}`}> {/*애니메이션 추가*/}
-            <div className="main-bg"></div>
+            <div className="main-bg hero-img"></div>
 
             {/*카드 생성 컴포넌트*/}
             <Container>
