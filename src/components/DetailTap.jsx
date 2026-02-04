@@ -41,13 +41,13 @@ let DetailTap = memo(() => {                    //memo로 렌더링을 한번만
         <>
         <Nav justify variant="tabs" defaultActiveKey="link0">
             <Nav.Item>
-                <Nav.Link eventKey="link0" onClick={() => { setTab(0) }}>Tab-1</Nav.Link>
+                <Nav.Link eventKey="link0" onClick={() => { setTab(0) }}>상품 설명</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link1" onClick={() => { setTab(1) }}>Tab-2</Nav.Link>
+                <Nav.Link eventKey="link1" onClick={() => { setTab(1) }}>요약</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link2" onClick={() => { setTab(2) }}>Tab-3</Nav.Link>
+                <Nav.Link eventKey="link2" onClick={() => { setTab(2) }}>리뷰</Nav.Link>
             </Nav.Item>
         </Nav>
         

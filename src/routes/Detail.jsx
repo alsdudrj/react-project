@@ -55,15 +55,15 @@ const Detail = (props) => {
     }
 
     /* ================================================================ */
-    /* ====detail페이지 접속시 해당페이지의 상품 id를 localStorage에 넣음==== */
+    /* ====detail페이지 접속시 해당페이지의 상품 id를 sessionStorage에 넣음==== */
     useEffect(() => {
-        let localItem = JSON.parse(localStorage.getItem('watchItem')) || [];
+        let localItem = JSON.parse(sessionStorage.getItem('watchItem')) || [];
         localItem.unshift(item.id)
 
         let set = [...new Set(localItem)];  //배열 중복 제거
         set = set.slice(0, 5);              //배열을 5개까지만 저장
 
-        localStorage.setItem('watchItem', JSON.stringify(set));
+        sessionStorage.setItem('watchItem', JSON.stringify(set));
     }, [item.id])
 
     return(

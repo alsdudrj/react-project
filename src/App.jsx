@@ -27,10 +27,10 @@ function App() {
   const [showRegister, setShowRegister] = useState(false);
 
 
-  /*홈페이지 첫 접속시 localStorage에 본 상품 배열 생성*/
+  /*홈페이지 첫 접속시 sessionStorage에 본 상품 배열 생성*/
   useEffect(() => {
-    if(!localStorage.getItem('watchItem')){
-      localStorage.setItem('watchItem', JSON.stringify([]))  
+    if(!sessionStorage.getItem('watchItem')){
+      sessionStorage.setItem('watchItem', JSON.stringify([]))  
     }
   },[]);
 
@@ -44,8 +44,8 @@ function App() {
       
 
       <Container fluid className='p-0'>
-          <Row>
-            <Col md={11}> {/*sticky 확인을 위해 150vh 추가*/}
+          {/* <Row>
+            <Col md={11}> sticky 확인을 위해 150vh 추가 */}
               <div className="App">
                 <Routes>
                   <Route path="/" 
@@ -64,13 +64,13 @@ function App() {
                   <Route path='*' element={<div>존재하지 않는 페이지이다</div>}/> 
                 </Routes>
               </div>
-            </Col>
+            {/* </Col> */}
             
             {/*Sidebar*/}
-            <Col md={1}>
+            {/* <Col md={1}> */}
                 <Sidebar shoes={shoes}/>
-            </Col>
-          </Row>
+            {/* </Col> */}
+          {/* </Row> */}
       </Container>
     </>
   );
