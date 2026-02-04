@@ -2,10 +2,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-let Item = (props) => {
+let Item = (props) => {             //메인 품목 카드
     let navigate = useNavigate();
     let e = props.shoes;
 
+    /* ================================= */
+    /* =============JSX구간============= */ 
     return(
         <>
         <Col md={4} className="mb-4">

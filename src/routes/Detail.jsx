@@ -1,28 +1,31 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import DetailTap from "../components/DetailTap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../store/cart";
 import { useLike } from "../hooks/Like";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
 import { Button } from "react-bootstrap";
-import data from "../components/data";
+import data from "../data/data";
 import { FooterText } from "../styled/Detail.styles";
 
 
 const Detail = (props) => {
-    let {id} = useParams();                         //주소로 접속시 url 파라미터를 받아옴
-    let item = data.find((v) => v.id == id); //서버에서 받은 data중 id요소를 이용하여 파라미터 번호에 맞는 array를 찾아옴
+    let {id} = useParams();                             //주소로 접속시 url 파라미터를 받아옴
+    let item = data.find((v) => v.id == id);            //서버에서 받은 data중 id요소를 이용하여 파라미터 번호에 맞는 array를 찾아옴
 
-    let [alert, setAlert] = useState(true);         //일정시간 후 없어질 html의 display boolean요소
-    let [numAlert, setNumAlert] = useState(false);  //인풋창에 문자 넣으면 Alert 띄우기
-    let [inputValue, setInputValue] = useState(""); //인풋창에 들어간 값 저장
+    let [alert, setAlert] = useState(true);             //일정시간 후 없어질 html의 display boolean요소
+    let [numAlert, setNumAlert] = useState(false);      //인풋창에 문자 넣으면 Alert 띄우기
+    let [inputValue, setInputValue] = useState("");     //인풋창에 들어간 값 저장
 
-    let [like, addLike] = useLike();                //custom hook을 불러옴
-    let dispatch = useDispatch();                   //redux state변경함수를 사용하기 위해 불러옴
+    let [like, addLike] = useLike();                    //custom hook을 불러옴
+    let dispatch = useDispatch();                       //redux state변경함수를 사용하기 위해 불러옴
 
-    const [fade, setFade] = useFadeAnimation();     //애니메이션을 주기위한 Custom Hook
-    const [footerFade, setFooterFade] = useState('');
+    const [fade, setFade] = useFadeAnimation();         //애니메이션을 주기위한 Custom Hook
+    const [footerFade, setFooterFade] = useState('');   //footer 애니메이션 상태관리
+    const [footerMsg, setFooterMsg] = useState('');     //footer 메시지 상태관리
+
+    const cartData = useSelector((state) => state.cart);     //store.js에 cart 데이터를 불러옴
 
 
     /* ================================ */
@@ -82,6 +85,9 @@ const Detail = (props) => {
         }
     }, [footerFade]);
 
+
+    /* ================================= */
+    /* =============JSX구간============= */ 
     return(
         <>
             <div className={`container start ${fade}`}> {/*애니메이션 추가*/}
@@ -107,15 +113,24 @@ const Detail = (props) => {
                         <p>제조사: {item.content}</p>
                         <p>{new Intl.NumberFormat('ko-KR').format(item.price)}원</p>
                         <Button variant="outline-success" onClick={() => {
-                            dispatch(addItem({
-                                id: item.id,
-                                name: item.title,
-                                count: 1
-                            }));
+                            let isExist = cartData.find((v) => v.id === item.id);
+
+                            if(isExist) {
+                                setFooterMsg('⚠️ 이미 장바구니에 있는 상품입니다.');
+                            }else{
+                                dispatch(addItem({
+                                    id: item.id,
+                                    name: item.title,
+                                    count: 1
+                                }));
+                                setFooterMsg('✔️ 장바구니에 담았습니다.');
+                            }
                             setFooterFade('');
 
                             setTimeout(() => { setFooterFade('footEnd'); }, 10)
-                        }}>장바구니 담기</Button>
+                        }}>
+                            장바구니 담기
+                        </Button>
                         <br />
                     {like}<span onClick={() => {addLike()}}>♥</span>
                     </div>
@@ -125,7 +140,7 @@ const Detail = (props) => {
                 <DetailTap/>
             </div>
             <FooterText className={`footer-animation ${footerFade ? 'footEnd' : 'footStart'}`}>
-                ✔️ 장바구니에 담았습니다. 
+                {footerMsg}
             </FooterText>
         </>
     );

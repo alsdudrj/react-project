@@ -5,8 +5,8 @@ import { useFadeAnimation } from "../hooks/FadeAnimation";
 import { useEffect, useState } from "react";
 
 const Home = (props) => {
-    const [fade, setFade] = useFadeAnimation();     //애니메이션을 주기위한 Custom Hook
-    const [pictureValue, setPictureValue] = useState(0);
+    const [fade, setFade] = useFadeAnimation();                         //애니메이션을 주기위한 Custom Hook
+    const [pictureValue, setPictureValue] = useState(0);                //슬라이드 vw값을 주기위한 카운팅
 
     const images = ["/img/bg-1.png", "/img/bg-2.png", "/img/bg-3.png"]; //슬라이드 이미지 갯수
     const imgCount = images.length;
@@ -24,6 +24,9 @@ const Home = (props) => {
     },[imgCount]);
     /* ============================== */
 
+
+    /* ================================= */
+    /* =============JSX구간============= */ 
     return(
         <>
         <div className={`start ${fade}`}> {/*애니메이션 추가*/}

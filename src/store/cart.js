@@ -1,11 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//cart에 보낼 데이터
+//cart 데이터
 let cart = createSlice({
     name : 'cart',
     initialState : [
-        // {id : 0, name : 'White and Black', count : 2},
-        // {id : 2, name : 'Grey Yordan', count : 1}
     ],
     reducers : {
         //상품 수량을 증가시키는 함수
@@ -17,11 +15,11 @@ let cart = createSlice({
         },
         //상품을 추가하는 함수
         addItem(state, action){
-            let target = state.find(item => item.id === action.payload.id); //파라미터로 받은 값 중 id를 현재 state.id랑 비교 
+            let target = state.find(item => item.id === action.payload.id);  //파라미터로 받은 값 중 id를 현재 state.id랑 비교 
 
             if(target){ //존재하는 상품이면 count 1증가
                 target.count += 1;
-            }else{  //없는 상품이면 상품 추가
+            }else{      //없는 상품이면 상품 추가
                 state.push(action.payload);
             }
         },

@@ -5,6 +5,9 @@ const Register = ({showRegister, setShowRegister}) => {
 
     const [showModal, setShowModal] = useModalAnimation();
 
+
+    /* ================================= */
+    /* =============JSX구간============= */ 
     return(
         <>
         <div className={`black-bg ${showModal}`} onClick={() => setShowRegister(false)}>

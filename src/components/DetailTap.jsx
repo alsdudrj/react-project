@@ -9,7 +9,7 @@ let DetailTap = memo(() => {                    //memo로 렌더링을 한번만
     /* ====================================================================== */
     /* ====tab상태에 따라 보여줄 html요소 if문 컴포넌트 (if문 말고 배열로 편법씀)==== */
     function TabContent({tab}){
-        let [scale, setScale] = useState(''); //애니메이션 class를 추가하기 위한 state
+        let [scale, setScale] = useState('');                       //애니메이션 class를 추가하기 위한 state
         
         useEffect(() => {
             if (isFirstRender.current) {
@@ -23,7 +23,7 @@ let DetailTap = memo(() => {                    //memo로 렌더링을 한번만
             return () => { setScale(''); clearTimeout(a); }          //애니메이션 줄 class에 end class를 먼저 없앰
         }, [tab])
 
-        
+        //탭 내용 반환
         return (
             <div className={isFirstRender.current ? 'scaleEnd' : `scaleStart ${scale}`}>
                 {
@@ -34,6 +34,8 @@ let DetailTap = memo(() => {                    //memo로 렌더링을 한번만
     }
 
 
+    /* ================================= */
+    /* =============JSX구간============= */ 
     return(
         <>
         <Nav justify variant="tabs" defaultActiveKey="link0">

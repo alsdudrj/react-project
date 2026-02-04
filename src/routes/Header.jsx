@@ -7,8 +7,11 @@ import LoginForm from "../components/LoginForm";
 
 const Header = ({showLogin, setShowLogin, showRegister, setShowRegister}) => {
     let navigate = useNavigate();   //URL 이동시 html표시를 도와줌
-    let username = useUsername(); //coustom hook을 불러옴
+    let username = useUsername();   //coustom hook을 불러옴
 
+
+    /* ================================= */
+    /* =============JSX구간============= */ 
     return(
         <>
         <Navbar bg="dark" data-bs-theme="dark" className='narbar header'>

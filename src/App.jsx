@@ -3,7 +3,7 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom';
 import Header from './routes/Header';
 import Home from './routes/Home';
-import data from './components/data.jsx';
+import data from './data/data.jsx';
 import { useEffect, useState, lazy } from 'react';
 import Sidebar from './routes/Sidebar.jsx';
 import { Col, Container, Row } from 'react-bootstrap';
@@ -30,6 +30,9 @@ function App() {
     }
   },[]);
 
+
+  /* ================================== */
+  /* =============Route구간============= */ 
   return (
     <>
       <Header 

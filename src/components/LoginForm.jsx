@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
     const navigate = useNavigate();
 
+
+    /* ================================= */
+    /* =============JSX구간============= */ 
     return(
         <>
         <div className="login-overlay">

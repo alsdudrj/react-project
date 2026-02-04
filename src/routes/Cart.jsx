@@ -7,10 +7,13 @@ import { useFadeAnimation } from "../hooks/FadeAnimation";
 const Cart = () => {
     let state = useSelector((state) => {return state}); //store.js에서 가져온 상품 데이터
 
-    const [fade, setFade] = useFadeAnimation();     //애니메이션을 주기위한 Custom Hook
+    const [fade, setFade] = useFadeAnimation();         //애니메이션을 주기위한 Custom Hook
 
-    let dispatch = useDispatch(); //state변경함수 사용을 위해 불러옴
+    let dispatch = useDispatch();                       //state변경함수 사용을 위해 불러옴
 
+
+    /* ================================= */
+    /* =============JSX구간============= */ 
     return(
         <div className={`start ${fade}`}> {/*애니메이션 추가*/}
         {/* {state.user.name}, {state.user.age}살의 장바구니
