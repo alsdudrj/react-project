@@ -15,16 +15,15 @@ const Cart = lazy(() => import('./routes/Cart.jsx'));
 
 
 function App() {
-  let [shoes, setShoes] = useState(data); //서버에서 가져온 데이터(라고 침)
-  let [qty, setQty] = useState([10, 11, 12]); //상품의 재고
-
-  let [mainCount, setMainCount] = useState(0); //메인페이지 더보기 클릭횟수 -> AddItem까지 props 시켜줌
+  let [shoes, setShoes] = useState(data.slice(0, 3)); //서버에서 가져온 데이터(라고 침)
+  let [mainCount, setMainCount] = useState(1); //메인페이지 더보기 클릭횟수 -> AddItem까지 props 시켜줌
 
   const [showLogin, setShowLogin] = useState(false); //로그인 폼 상태
   const [showRegister, setShowRegister] = useState(false);
 
 
-  /*홈페이지 첫 접속시 sessionStorage에 본 상품 배열 생성*/
+  /* ======================================================== */
+  /* ====홈페이지 첫 접속시 sessionStorage에 본 상품 배열 생성==== */
   useEffect(() => {
     if(!sessionStorage.getItem('watchItem')){
       sessionStorage.setItem('watchItem', JSON.stringify([]))  
@@ -41,30 +40,24 @@ function App() {
       
 
       <Container fluid className='p-0'>
-          {/* <Row>
-            <Col md={11}> sticky 확인을 위해 150vh 추가 */}
-              <div className="App">
-                <Routes>
-                  <Route path="/" 
-                  element={<Home 
-                    shoes={shoes} setShoes={setShoes} 
-                    mainCount={mainCount} setMainCount={setMainCount}
-                    showLogin={showLogin}
-                  />}/>
-                  <Route path='/detail/:id' element={<Detail shoes={shoes}/>}/>
-                  <Route path="/cart" element={<Cart/>}/>
+        <div className="App">
+          <Routes>
+            <Route path="/" 
+            element={<Home 
+              shoes={shoes} setShoes={setShoes} 
+              mainCount={mainCount} setMainCount={setMainCount}
+              showLogin={showLogin}
+            />}/>
+            <Route path='/detail/:id' element={<Detail shoes={shoes}/>}/>
+            <Route path="/cart" element={<Cart/>}/>
 
-                  {/*잘못된 URL 접속시 보야주는 페이지*/}
-                  <Route path='*' element={<div>존재하지 않는 페이지이다</div>}/> 
-                </Routes>
-              </div>
-            {/* </Col> */}
-            
-            {/*Sidebar*/}
-            {/* <Col md={1}> */}
-                <Sidebar shoes={shoes}/>
-            {/* </Col> */}
-          {/* </Row> */}
+            {/*잘못된 URL 접속시 보야주는 페이지*/}
+            <Route path='*' element={<div>존재하지 않는 페이지이다</div>}/> 
+          </Routes>
+        </div>       
+
+        {/*Sidebar*/}
+        <Sidebar shoes={shoes}/>
       </Container>
     </>
   );

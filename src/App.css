@@ -124,6 +124,22 @@ div {
 /*=======================================*/
 
 
+/* ====footer애니메이션==== */
+.footer-animation {
+  transition: opacity 1s, visibility 1s; 
+}
+.footStart {
+  opacity: 0;
+  visibility: hidden;
+}
+.footEnd {
+  opacity: 1;
+  transition: opacity 0.01s;
+  visibility: visible;
+}
+/*=======================================*/
+
+
 /* ====modal창==== */
 /*모달 뒤 검은배경*/
 .black-bg { 

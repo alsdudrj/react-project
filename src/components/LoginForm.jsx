@@ -8,14 +8,14 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
         <>
         <div className="login-overlay">
             <Form>
-                <Form.Group className="mb-3" controlId="formBasicId">
+                <Form.Group className="mb-3" controlId="Id">
                     <Form.Control type="email" placeholder="아이디" />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className="mb-3" controlId="Password">
                     <Form.Control type="password" placeholder="패스워드" />
                 </Form.Group>
-                <Form.Group className="d-flex justify-content-between align-items-center" controlId="formBasicCheckbox">
+                <Form.Group className="d-flex justify-content-between align-items-center" controlId="Checkbox">
                     <Form.Check type="checkbox" label="날 기억해줘" className="login-checkbox"/>
                     <Button variant="outline-dark" type="submit">
                         로그인

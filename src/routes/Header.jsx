@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Form, InputGroup, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useUsername } from "../hooks/Username";
 import LoginForm from "../components/LoginForm";
@@ -25,6 +25,16 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister}) => {
 
                         {showLogin && <LoginForm setShowLogin={setShowLogin} showRegister={showRegister} setShowRegister={setShowRegister}/>}
                     </div>
+                </Nav>
+                <Nav style={{ textAlign: "right" }}>
+                    <InputGroup>
+                            <Form.Control
+                            placeholder="검색"
+                            aria-label="search"
+                            />
+                            <Button variant="primary">검색</Button>
+                            <Button variant="outline-info">필터</Button>
+                    </InputGroup>
                 </Nav>
             </Container>
         </Navbar>

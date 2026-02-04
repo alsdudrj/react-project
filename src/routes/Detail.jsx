@@ -6,11 +6,13 @@ import { addItem } from "../store/cart";
 import { useLike } from "../hooks/Like";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
 import { Button } from "react-bootstrap";
+import data from "../components/data";
+import { FooterText } from "../styled/Detail.styles";
 
 
 const Detail = (props) => {
     let {id} = useParams();                         //주소로 접속시 url 파라미터를 받아옴
-    let item = props.shoes.find((v) => v.id == id); //서버에서 받은 data중 id요소를 이용하여 파라미터 번호에 맞는 array를 찾아옴
+    let item = data.find((v) => v.id == id); //서버에서 받은 data중 id요소를 이용하여 파라미터 번호에 맞는 array를 찾아옴
 
     let [alert, setAlert] = useState(true);         //일정시간 후 없어질 html의 display boolean요소
     let [numAlert, setNumAlert] = useState(false);  //인풋창에 문자 넣으면 Alert 띄우기
@@ -20,6 +22,7 @@ const Detail = (props) => {
     let dispatch = useDispatch();                   //redux state변경함수를 사용하기 위해 불러옴
 
     const [fade, setFade] = useFadeAnimation();     //애니메이션을 주기위한 Custom Hook
+    const [footerFade, setFooterFade] = useState('');
 
 
     /* ================================ */
@@ -67,6 +70,18 @@ const Detail = (props) => {
         sessionStorage.setItem('watchItem', JSON.stringify(set));
     }, [item.id])
 
+    /* ============================================ */
+    /* ====장바구니 담기시 footer에 안내메세지 출력==== */    
+    useEffect(() => {
+        if (footerFade === 'footEnd'){
+            let timer = setTimeout(() => {
+                setFooterFade('');
+            }, 500);
+
+            return () => clearTimeout(timer);
+        }
+    }, [footerFade]);
+
     return(
         <>
             <div className={`container start ${fade}`}> {/*애니메이션 추가*/}
@@ -74,7 +89,7 @@ const Detail = (props) => {
                 {/*일정 시간 후 없어지는 요소*/}
                 {alert == true ? 
                     <div className="alert alert-warning" id="sale">
-                        2초이내 구매시 할인
+                        2초이내 결제시 할인
                     </div>
                     :
                     ''
@@ -96,7 +111,10 @@ const Detail = (props) => {
                                 id: item.id,
                                 name: item.title,
                                 count: 1
-                            }))
+                            }));
+                            setFooterFade('');
+
+                            setTimeout(() => { setFooterFade('footEnd'); }, 10)
                         }}>장바구니 담기</Button>
                         <br />
                     {like}<span onClick={() => {addLike()}}>♥</span>
@@ -105,7 +123,10 @@ const Detail = (props) => {
 
                 {/*Tap*/}
                 <DetailTap/>
-            </div> 
+            </div>
+            <FooterText className={`footer-animation ${footerFade ? 'footEnd' : 'footStart'}`}>
+                ✔️ 장바구니에 담았습니다. 
+            </FooterText>
         </>
     );
 }

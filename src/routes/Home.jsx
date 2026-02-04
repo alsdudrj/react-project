@@ -1,4 +1,4 @@
-import { Container, Row } from "react-bootstrap";
+import { Button, Container, Form, InputGroup, Row } from "react-bootstrap";
 import Item from "../components/Item";
 import AddItem from "../components/AddItem";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
@@ -11,6 +11,8 @@ const Home = (props) => {
     const images = ["/img/bg-1.png", "/img/bg-2.png", "/img/bg-3.png"]; //슬라이드 이미지 갯수
     const imgCount = images.length;
 
+    /* ============================== */
+    /* ====메인페이지 슬라이드 이미지==== */
     useEffect(() => {
         const timer = setInterval(() => {
             setPictureValue((prev) => (prev + 1) % imgCount);
@@ -20,6 +22,7 @@ const Home = (props) => {
             clearInterval(timer);
         }};
     },[imgCount]);
+    /* ============================== */
 
     return(
         <>
