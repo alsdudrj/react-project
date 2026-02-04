@@ -2,14 +2,41 @@ import { Container, Row } from "react-bootstrap";
 import Item from "../components/Item";
 import AddItem from "../components/AddItem";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
+import { useEffect, useState } from "react";
 
 const Home = (props) => {
     const [fade, setFade] = useFadeAnimation();     //애니메이션을 주기위한 Custom Hook
+    const [pictureValue, setPictureValue] = useState(0);
+
+    const images = ["/img/bg-1.png", "/img/bg-2.png", "/img/bg-3.png"]; //슬라이드 이미지 갯수
+    const imgCount = images.length;
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setPictureValue((prev) => (prev + 1) % imgCount);
+        }, 5000);
+
+        {return () => {
+            clearInterval(timer);
+        }};
+    },[imgCount]);
 
     return(
         <>
         <div className={`start ${fade}`}> {/*애니메이션 추가*/}
-            <div className="main-bg"></div>
+            <div className="main-bg">
+                <div className="slide-container" 
+                style={{ 
+                        width: `${imgCount * 100}vw`,
+                        transform: `translateX(-${pictureValue * 100}vw)`
+                    }}>
+                    {images.map((src, i) => (
+                        <div className="slide-box" key={i}>
+                            <img src={src}/>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
             {/*카드 생성 컴포넌트*/}
             <Container>

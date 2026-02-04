@@ -6,6 +6,8 @@ import { SidebarDesign, SidebarH6, SidebarImg } from "../styled/SidebarDesign.st
 const Sidebar = (props) => {
     let navigate = useNavigate();
 
+    const [showItem, setShowItem] = useState(true);
+
     let [item, setItem] = useState([]); //sessionStorage에서 뽑은 상품 정보를 저장할 곳
     let location = useLocation(); //현재 주소의 정보를 반환받음
 
@@ -29,8 +31,16 @@ const Sidebar = (props) => {
         <>
         <div className="sidebar-wrapper">
         <SidebarDesign>
+            <div className="d-flex justify-content-center">
             <h5>최근본 상품</h5>
+            { showItem == true ? 
+                <p style={{ cursor: "pointer" }} onClick={() => setShowItem(false)}>🔼</p> 
+                : 
+                <p style={{ cursor: "pointer" }} onClick={() => setShowItem(true)}>🔽</p> 
+            }
+            </div>
             {
+                showItem == true ?
                 item.map((e, i) => {
                     return(
                         <div key={e.id}>
@@ -41,6 +51,8 @@ const Sidebar = (props) => {
                         </div>
                     )
                 })
+                :
+                ''
             }
         </SidebarDesign>
         </div>

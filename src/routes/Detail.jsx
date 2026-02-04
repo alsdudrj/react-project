@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { addItem } from "../store/cart";
 import { useLike } from "../hooks/Like";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
+import { Button } from "react-bootstrap";
 
 
 const Detail = (props) => {
@@ -90,13 +91,13 @@ const Detail = (props) => {
                         <h4 className="pt-5">{item.title}</h4>
                         <p>제조사: {item.content}</p>
                         <p>{new Intl.NumberFormat('ko-KR').format(item.price)}원</p>
-                        <button className="btn btn-danger" onClick={() => {
+                        <Button variant="outline-success" onClick={() => {
                             dispatch(addItem({
                                 id: item.id,
                                 name: item.title,
                                 count: 1
                             }))
-                        }}>주문하기</button>
+                        }}>장바구니 담기</Button>
                         <br />
                     {like}<span onClick={() => {addLike()}}>♥</span>
                     </div>
