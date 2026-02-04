@@ -8,10 +8,10 @@ let cart = createSlice({
     reducers : {
         //상품 수량을 증가시키는 함수
         addCount(state, action){
-                let target = state.find(item => item.id === action.payload); //파라미터로 받은 값(id)를 현재 state.id랑 비교
-                if(target){ //id가 존재하면 count 1증가
-                    target.count += 1;
-                }
+                let target = state.find(item => item.id === action.payload.id); //파라미터로 받은 값(id)를 현재 state.id랑 비교
+                 //id가 존재하면 count 1증가
+                    target.count = action.payload.newCount;
+
         },
         //상품을 추가하는 함수
         addItem(state, action){

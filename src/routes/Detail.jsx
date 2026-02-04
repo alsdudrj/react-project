@@ -115,6 +115,8 @@ const Detail = (props) => {
                                 dispatch(addItem({
                                     id: item.id,
                                     name: item.title,
+                                    content: item.content,
+                                    price: item.price,
                                     count: 1
                                 }));
                                 setFooterMsg('✔️ 장바구니에 담았습니다.');

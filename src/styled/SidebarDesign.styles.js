@@ -30,4 +30,5 @@ export const SidebarImg = styled.img`
 export const SidebarH6 = styled.h6`
     cursor: pointer;
     marginTop: 6px;
+    align-items: center;
 `;
