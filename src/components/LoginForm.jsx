@@ -1,14 +1,14 @@
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const LoginForm = ({setShowLogin}) => {
+const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
     const navigate = useNavigate();
 
     return(
         <>
         <div className="login-overlay">
             <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" controlId="formBasicId">
                     <Form.Control type="email" placeholder="아이디" />
                 </Form.Group>
 
@@ -22,7 +22,7 @@ const LoginForm = ({setShowLogin}) => {
                     </Button>
                 </Form.Group>
                 <div className="d-grid gap-2 mt-1">
-                    <Button onClick={() => { navigate('/register'); setShowLogin(false) }} variant="outline-success" size="lg">
+                    <Button onClick={() => { setShowRegister(!showRegister); setShowLogin(false) }} variant="outline-danger" size="lg">
                         회원가입
                     </Button>
                  </div>

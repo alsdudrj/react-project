@@ -4,6 +4,7 @@ import DetailTap from "../components/DetailTap";
 import { useDispatch } from "react-redux";
 import { addItem } from "../store/cart";
 import { useLike } from "../hooks/Like";
+import { useFadeAnimation } from "../hooks/FadeAnimation";
 
 
 const Detail = (props) => {
@@ -17,7 +18,7 @@ const Detail = (props) => {
     let [like, addLike] = useLike();                //custom hook을 불러옴
     let dispatch = useDispatch();                   //redux state변경함수를 사용하기 위해 불러옴
 
-    let [fade, setFade] = useState('');             //애니메이션을 주기위한 className state
+    const [fade, setFade] = useFadeAnimation();     //애니메이션을 주기위한 Custom Hook
 
 
     /* ================================ */
@@ -64,17 +65,6 @@ const Detail = (props) => {
 
         localStorage.setItem('watchItem', JSON.stringify(set));
     }, [item.id])
-
-    /* ===================== */
-    /* ====애니메이션 추가==== */
-    useEffect(() => {
-        window.scrollTo(0, 0);                              //화면 제일위로 이동
-
-        let a = setTimeout(() => { setFade('end') }, 10);   //detail페이지 접속시 detail페이지를 감싼 div에 애니메이션 class 추가
-
-        return () => { clearTimeout(a); setFade(''); }      //페이지 로드전 타이머 초기화 className 초기화
-    }, [location.pathname]);                                //URL 주소가 변경될 때마다 실행
-
 
     return(
         <>

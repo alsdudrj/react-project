@@ -1,27 +1,15 @@
 import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { changeName } from "../store/user";
 import { addCount, deleteItem } from "../store/cart";
 import { useEffect, useState } from "react";
+import { useFadeAnimation } from "../hooks/FadeAnimation";
 
 const Cart = () => {
     let state = useSelector((state) => {return state}); //store.js에서 가져온 상품 데이터
 
-    let [fade, setFade] = useState(''); //애니메이션을 주기위한 className state
+    const [fade, setFade] = useFadeAnimation();     //애니메이션을 주기위한 Custom Hook
 
     let dispatch = useDispatch(); //state변경함수 사용을 위해 불러옴
-
-
-    /* ====애니메이션 추가==== */
-    useEffect(() => {
-        window.scrollTo(0, 0); //화면 제일위로 이동
-
-
-        let a = setTimeout(() => { setFade('end') }, 10); //detail페이지 접속시 detail페이지를 감싼 div에 애니메이션 class 추가
-
-        return () => { clearTimeout(a); setFade(''); } //페이지 로드전 타이머 초기화 className 초기화
-    }, [location.pathname]);  //URL 주소가 변경될 때마다 실행
-    
 
     return(
         <div className={`start ${fade}`}> {/*애니메이션 추가*/}

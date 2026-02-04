@@ -7,20 +7,22 @@ div {
 }
 
 .main-bg{
-
+  position: relative;
   height: 300px;
   background-size: cover;
   background-position: center;
   background-image: url('/img/bg-1.png');
 }
-/*===========*/
+/*=======================================*/
 
 
-/*로그인폼 애니메이션 및 css*/
-.hero-section {
+.header{
   position: relative;
+  z-index: 10;
 }
 
+
+/* ====로그인폼 애니메이션 및 css==== */
 .login-anchor { /*로그인 버튼 및 폼 위치 고정*/
   position: relative;   
   display: inline-block;
@@ -45,13 +47,36 @@ div {
   animation: slideDown 0.3s ease forwards;
 }
 
+.login-overlay .form-control { /* 인풋창 설정 */
+  background-color: white;   
+  color: black;
+  border: 1px solid black;
+}
+.login-overlay .form-control::placeholder {
+  color: #868e96;
+}
+.login-overlay .form-control:focus {
+  background-color: transparent;
+  color: black;
+  border-color: none;
+  box-shadow: none;
+}
+
 .login-checkbox .form-check-label { /*체크박스 설정*/
   color: black;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 800;
   cursor: pointer;
   margin-top: 3px;
 }
+.login-overlay .form-check-input {
+  background-color: white;
+}
+.login-overlay .form-check-input:checked {
+  background-color: blue;
+  border-color: none;
+}
+
 
 @keyframes slideDown { /*애니메이션 설정*/
   to {
@@ -59,9 +84,10 @@ div {
     opacity: 1;
   }
 }
-/*===========*/
+/*=======================================*/
 
-/*애니메이션*/
+
+/* ====애니메이션==== */
 .start {
   opacity: 0;
 }
@@ -78,18 +104,52 @@ div {
   transform-origin: center center;
   transition: all 0.5s;
 }
-/*===========*/
+/*=======================================*/
 
 
-/*sticky 이동을 위한 height 속성추가*/
+/* ====modal창==== */
+.black-bg {
+  width : 100%;
+  height : 100%;
+  position : fixed;
+  background : rgba(0,0,0,0.5);
+  z-index : 9999;
+  inset: 0;
+  opacity: 0;
+  transition: all 0.5s;
+}
+.black-bg.show-modal{
+  opacity: 1;
+  pointer-events: auto;
+}
+.white-bg {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: auto;
+  margin: 200px auto;
+  padding: 30px;
+
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+.white-bg.show-modal{
+  transform: translateY(0);
+  opacity: 1;
+}
+/*=======================================*/
+
+
+/* ====sticky 이동을 위한 height 속성추가==== */
 .sidebar-wrapper{
   height: 100%;
 }
-/*===========*/
+/*=======================================*/
 
 
-/*헤더 이름표사*/
+/* ====헤더 이름표사==== */
 .headerName{
   color: white;
 }
-/*===========*/
+/*=======================================*/

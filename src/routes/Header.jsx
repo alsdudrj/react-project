@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useUsername } from "../hooks/Username";
 import LoginForm from "../components/LoginForm";
 
-const Header = ({showLogin, setShowLogin}) => {
+const Header = ({showLogin, setShowLogin, showRegister, setShowRegister}) => {
     let navigate = useNavigate();   //URL 이동시 html표시를 도와줌
     let username = useUsername(); //coustom hook을 불러옴
 
     return(
         <>
-        <Navbar bg="dark" data-bs-theme="dark" className='narbar'>
+        <Navbar bg="dark" data-bs-theme="dark" className='narbar header'>
             <Container fluid>
                 <img src='/img/react.png' style={{width: "2%", cursor: "pointer"}} onClick={() => { navigate('/')}}/>
                 <Navbar.Brand style={{cursor: "pointer"}} onClick={() => { navigate('/')}}>{username}신발샵이다</Navbar.Brand>
@@ -22,7 +22,7 @@ const Header = ({showLogin, setShowLogin}) => {
                     <div className="login-anchor">
                         <Button variant="outline-light" onClick={() => setShowLogin(!showLogin)}>로그인</Button>
 
-                        {showLogin && <LoginForm setShowLogin={setShowLogin}/>}
+                        {showLogin && <LoginForm setShowLogin={setShowLogin} showRegister={showRegister} setShowRegister={setShowRegister}/>}
                     </div>
                 </Nav>
             </Container>

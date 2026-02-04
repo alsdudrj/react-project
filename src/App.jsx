@@ -7,6 +7,7 @@ import data from './components/data.jsx';
 import { createContext, useEffect, useState, lazy } from 'react';
 import Sidebar from './routes/Sidebar.jsx';
 import { Col, Container, Row } from 'react-bootstrap';
+import Register from './components/Register.jsx';
 // import Detail from './routes/Detail.jsx';
 // import Cart from './routes/Cart.jsx';
 const Detail = lazy(() => import('./routes/Detail.jsx')); //lazy방식 import
@@ -23,6 +24,7 @@ function App() {
   let [mainCount, setMainCount] = useState(0); //메인페이지 더보기 클릭횟수 -> AddItem까지 props 시켜줌
 
   const [showLogin, setShowLogin] = useState(false); //로그인 폼 상태
+  const [showRegister, setShowRegister] = useState(false);
 
 
   /*홈페이지 첫 접속시 localStorage에 본 상품 배열 생성*/
@@ -34,7 +36,12 @@ function App() {
 
   return (
     <>
-      <Header setShowLogin={setShowLogin} showLogin={showLogin}/>
+      <Header 
+      setShowLogin={setShowLogin} showLogin={showLogin}
+      showRegister={showRegister} setShowRegister={setShowRegister}
+      />
+      {showRegister == true ? <Register showRegister={showRegister} setShowRegister={setShowRegister}/> : ''}
+      
 
       <Container fluid className='p-0'>
           <Row>
