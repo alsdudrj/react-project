@@ -1,6 +1,7 @@
 import { useState } from "react";
 import data from "../data/data";
 import { Button } from "react-bootstrap";
+import SkeletonImg from "./SkeletonImg";
 
 let AddItem = (props) => {
 
@@ -11,7 +12,7 @@ let AddItem = (props) => {
     /* =============JSX구간============= */ 
     return(
         <>
-        { loadingAlert == true ? <div>로딩중 ~~</div> : '' }
+        { loadingAlert == true ? <SkeletonImg/> : '' }
         {  
             loadingAlert == false ?                         //로딩 중 더보기 버튼을 안보이게 하기 위해 삼항연산자 사용
             props.mainCount * 3 < data.length &&            //urls 배열 수만큼 count버튼을 누를 수 있게 만듬

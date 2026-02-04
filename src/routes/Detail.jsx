@@ -91,24 +91,18 @@ const Detail = (props) => {
     return(
         <>
             <div className={`container start ${fade}`}> {/*애니메이션 추가*/}
-                
-                {/*일정 시간 후 없어지는 요소*/}
-                {alert == true ? 
-                    <div className="alert alert-warning" id="sale">
-                        2초이내 결제시 할인
-                    </div>
-                    :
-                    ''
-                }
-                
                 {/*detail 페이지 카드 요소*/}
                 <div className="row">
                     <div className="col-md-6">
                         <img src={`https://codingapple1.github.io/shop/shoes${item.id + 1}.jpg`} width="100%" />
                     </div>
                     <div className="col-md-6">
-                        { numAlert == true ? <p style={{color: "red"}}>글자를 못읽는것이냐? 문자말고 숫자써라</p> : ''}
-                        <input type="text" id="numInput" placeholder="실험용(숫자만써라)" value={inputValue} onChange={(e) => { setInputValue(e.target.value) }}/>
+                        <div className="d-flex align-items-center justify-content-center" style={{ gap: '10px', height: '40px' }}>
+                            <input type="text" id="numInput" placeholder="실험용(숫자만써라)" value={inputValue} onChange={(e) => { setInputValue(e.target.value) }}/>
+                            <div style={{ width: '250px', textAlign: 'left' }}>
+                                { numAlert == true ? <p style={{color: "red", margin: 0, fontSize: '12px'}}>글자를 못읽는것이냐? 문자말고 숫자써라</p> : '' }
+                            </div>
+                        </div>
                         <h4 className="pt-5">{item.title}</h4>
                         <p>제조사: {item.content}</p>
                         <p>{new Intl.NumberFormat('ko-KR').format(item.price)}원</p>
@@ -135,6 +129,15 @@ const Detail = (props) => {
                     {like}<span onClick={() => {addLike()}}>♥</span>
                     </div>
                 </div>
+
+                {/*일정 시간 후 없어지는 요소*/}
+                {alert == true ? 
+                    <div className="alert alert-warning" id="sale">
+                        2초이내 결제시 할인
+                    </div>
+                    :
+                    ''
+                }
 
                 {/*Tap*/}
                 <DetailTap/>
