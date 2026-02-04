@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SidebarDesign } from "../styled/SidebarDesign.styles";
+import { SidebarDesign, SidebarH6, SidebarImg } from "../styled/SidebarDesign.styles";
 
 const Sidebar = (props) => {
     let navigate = useNavigate();
@@ -34,10 +34,10 @@ const Sidebar = (props) => {
                 item.map((e, i) => {
                     return(
                         <div key={e.id}>
-                            <img onClick={() => navigate(`/detail/${e.id}`)} 
+                            <SidebarImg onClick={() => navigate(`/detail/${e.id}`)} 
                             src={`https://codingapple1.github.io/shop/shoes${e.id + 1}.jpg`} 
-                            width="100%" style={{cursor: "pointer", height: "125px"}}/>
-                            <h6 onClick={() => navigate(`/detail/${e.id}`)} style={{cursor: "pointer", marginTop: "6px"}}>{e.title}</h6>
+                            />
+                            <SidebarH6 onClick={() => navigate(`/detail/${e.id}`)}>{e.title}</SidebarH6>
                         </div>
                     )
                 })

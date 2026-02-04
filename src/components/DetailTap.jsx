@@ -1,11 +1,8 @@
-import { memo, useContext, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Nav } from "react-bootstrap";
-import { Context1 } from "../App";
 
 let DetailTap = memo(() => {                    //memo로 렌더링을 한번만 하게 변경
     let [tab, setTab] = useState(0);            //탭 변환값 기록
-
-    let {shoes, qty} = useContext(Context1);    //Context API로 APP에서 불러온 데이터
 
     const isFirstRender = useRef(true);
 
@@ -30,7 +27,7 @@ let DetailTap = memo(() => {                    //memo로 렌더링을 한번만
         return (
             <div className={isFirstRender.current ? 'scaleEnd' : `scaleStart ${scale}`}>
                 {
-                    [<div>{qty[0]}</div>, <div>내용2</div>, <div>내용3</div>][tab]
+                    [<div>내용1</div>, <div>내용2</div>, <div>내용3</div>][tab]
                 }
             </div>
         )

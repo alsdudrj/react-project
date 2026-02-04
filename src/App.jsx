@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './routes/Header';
 import Home from './routes/Home';
 import data from './components/data.jsx';
-import { createContext, useEffect, useState, lazy } from 'react';
+import { useEffect, useState, lazy } from 'react';
 import Sidebar from './routes/Sidebar.jsx';
 import { Col, Container, Row } from 'react-bootstrap';
 import Register from './components/Register.jsx';
@@ -13,9 +13,6 @@ import Register from './components/Register.jsx';
 const Detail = lazy(() => import('./routes/Detail.jsx')); //lazy방식 import
 const Cart = lazy(() => import('./routes/Cart.jsx'));
 
-
-/*Context를 만들어줌*/
-export let Context1 = createContext();
 
 function App() {
   let [shoes, setShoes] = useState(data); //서버에서 가져온 데이터(라고 침)
@@ -54,10 +51,7 @@ function App() {
                     mainCount={mainCount} setMainCount={setMainCount}
                     showLogin={showLogin}
                   />}/>
-                  <Route path='/detail/:id' element={
-                    <Context1.Provider value={{shoes, qty}}>
-                      <Detail shoes={shoes}/>
-                    </Context1.Provider>}/>
+                  <Route path='/detail/:id' element={<Detail shoes={shoes}/>}/>
                   <Route path="/cart" element={<Cart/>}/>
 
                   {/*잘못된 URL 접속시 보야주는 페이지*/}
