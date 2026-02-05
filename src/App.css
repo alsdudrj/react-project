@@ -303,3 +303,23 @@ a {
 /*=======================================*/
 
 
+.tab-container {
+  top: 0;
+  background: white;
+  display: flex;
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 15px 0;
+  cursor: pointer;
+}
+
+.tab-item.active {
+  border-bottom: 3px solid #0073e6; /* 쿠팡 특유의 블루 포인트 */
+  color: #0073e6;
+  font-weight: bold;
+}

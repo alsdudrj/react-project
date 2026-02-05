@@ -81,7 +81,8 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                 {/*detail 페이지 카드 요소*/}
                 <div className="row">
                     <div className="col-md-6">
-                        <img src={`https://codingapple1.github.io/shop/shoes${item.id + 1}.jpg`} width="100%" height="500px" />
+                        <img src={`https://codingapple1.github.io/shop/shoes${item.id + 1}.jpg`} width="100%" height="500px"/>
+                        <p style={{ fontSize: '8px', color: '#666' }}>신발사이즈는 랜덤으로 발송 됩니다</p>
                     </div>
                     <div className="col-md-6">
                         <div className="d-flex align-items-center justify-content-center" style={{ gap: '10px', height: '40px' }}>
@@ -131,7 +132,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                 }
 
                 {/*Tap*/}
-                <DetailTap/>
+                <DetailTap item={item}/>
             </div>
         </>
     );
