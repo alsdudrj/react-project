@@ -13,6 +13,9 @@ const Cart = () => {
     const [handleAddress, address, isOpen, setIsOpen] = useKakaoAddress();   //카카오주소 목록 불러오기를 위한 Custom Hook
 
     const [checkItems, setCheckItems] = useState(state.cart.map(item => item.id)); //체크된 품목 ID요소 저장
+    const totalPrice = 
+        state.cart.filter(item => checkItems.includes(item.id))
+        .reduce((price, item) => price + (item.price * item.count), 0);
 
     let dispatch = useDispatch();                                            //state변경함수 사용을 위해 불러옴
 
@@ -109,7 +112,42 @@ const Cart = () => {
                     >
                         전체 선택
                     </label>
+                    <span className="p-1" style={{ fontSize: '14px', color: '#666' }}>(신발당 구매는 5개까지만 가능하다)</span>
                 </div>
+
+                {/*총액 및 구매버튼 영역*/}
+                <div className="d-flex align-items-center mb-3" 
+                    style={{ 
+                        position: 'relative', 
+                        width: '100%', 
+                        paddingLeft: '10px' 
+                        }}
+                >
+                    <div className="d-flex align-items-center gap-2">
+                        <span style={{ fontSize: '14px', color: '#666' }}>총 금액 : </span>
+                        <span style={{ fontSize: '20px', fontWeight: '700', color: '#333'}}>
+                            {new Intl.NumberFormat('ko-KR').format(totalPrice)}원
+                        </span>
+                    </div>
+                    <div className="d-flex align-items-center gap-3" 
+                        style={{ 
+                            position: 'absolute', 
+                            left: '50%', 
+                            transform: 'translateX(-50%)', // 본인 너비의 절반만큼 왼쪽으로 밀어서 완벽한 중앙 정렬
+                            display: 'flex'
+                        }}
+                    >
+                        <span style={{ fontSize: '20px', fontWeight: '700', color: '#333'}}>총 {checkItems.length}개 </span>
+
+                        <Button 
+                            variant="outline-danger" 
+                            disabled={checkItems.length === 0}
+                        >
+                            구매하기
+                        </Button>
+                    </div>
+                </div>
+                    
                 <hr/>
 
                 {/*상품 카드 영역*/}
@@ -145,16 +183,20 @@ const Cart = () => {
                                                 <Card.Text className="mb-0">{new Intl.NumberFormat('ko-KR').format(item.price * item.count)}원</Card.Text>
                                                 <input type="number" min="1" value={item.count} style={{ width: "40px", textAlign: "center" }}
                                                     onChange={(e) => {
+                                                        let value = parseInt(e.target.value);
+
+                                                        if (isNaN(value) || value <= 0) value = 1;
+                                                        if (value >= 5) value = 5;
+
                                                         dispatch(addCount({
                                                             id: item.id,
-                                                            newCount: parseInt(e.target.value)
+                                                            newCount: value
                                                         }));
                                                     }}
                                                 />
                                             </div>
                                             <div className="d-flex justify-content-center gap-2 mt-auto">
                                                 <Button variant="outline-danger" onClick={() => dispatch(deleteItem(item.id))}>제거</Button>
-                                                <Button variant="outline-primary">구매</Button>
                                             </div>
                                         </Card.Body>
                                     </Card>
