@@ -13,6 +13,45 @@ div {
 /*=======================================*/
 
 
+/* ====폰트설정==== */
+body, button, input, select, textarea, h1, h2, h3, h4, p, span {
+  font-family: -apple-system !important;
+  letter-spacing: -0.5px !important;
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", 
+               "Malgun Gothic", "맑은 고딕", helvetica, sans-serif;
+  letter-spacing: -0.5px; 
+  line-height: 1.5;
+  color: #1e1e23;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+* {
+  font-family: inherit;
+  box-sizing: border-box;
+  letter-spacing: inherit;
+}
+button, input, select, textarea {
+  font-family: inherit;
+}
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  color: #000;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.highlight-price {
+  font-weight: 800;
+  color: #f4361e; 
+}
+/*=======================================*/
+
+
 /* ====카트 이미지==== */
 .cart-grid {
   display: grid;
@@ -200,9 +239,9 @@ div {
 /*=======================================*/
 
 
-/* ====sticky 이동을 위한 height 속성추가==== */
+/* ====sidebar==== */
 .sidebar-wrapper{
-  height: 100%;
+  text-align: center;
 }
 /*=======================================*/
 
@@ -212,3 +251,5 @@ div {
   color: white;
 }
 /*=======================================*/
+
+
