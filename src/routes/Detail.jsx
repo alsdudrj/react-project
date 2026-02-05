@@ -8,9 +8,10 @@ import { useFadeAnimation } from "../hooks/FadeAnimation";
 import { Button } from "react-bootstrap";
 import data from "../data/data";
 import { FooterText } from "../styled/Detail.styles";
+import { useFooterAlert } from "../hooks/FooterAlert";
 
 
-const Detail = (props) => {
+const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     let {id} = useParams();                             //주소로 접속시 url 파라미터를 받아옴
     let item = data.find((v) => v.id == id);            //서버에서 받은 data중 id요소를 이용하여 파라미터 번호에 맞는 array를 찾아옴
 
@@ -22,8 +23,6 @@ const Detail = (props) => {
     let dispatch = useDispatch();                       //redux state변경함수를 사용하기 위해 불러옴
 
     const [fade, setFade] = useFadeAnimation();         //애니메이션을 주기위한 Custom Hook
-    const [footerFade, setFooterFade] = useState('');   //footer 애니메이션 상태관리
-    const [footerMsg, setFooterMsg] = useState('');     //footer 메시지 상태관리
 
     const cartData = useSelector((state) => state.cart);     //store.js에 cart 데이터를 불러옴
 
@@ -73,18 +72,6 @@ const Detail = (props) => {
         sessionStorage.setItem('watchItem', JSON.stringify(set));
     }, [item.id])
 
-    /* ============================================ */
-    /* ====장바구니 담기시 footer에 안내메세지 출력==== */    
-    useEffect(() => {
-        if (footerFade === 'footEnd'){
-            let timer = setTimeout(() => {
-                setFooterFade('');
-            }, 500);
-
-            return () => clearTimeout(timer);
-        }
-    }, [footerFade]);
-
 
     /* ================================= */
     /* =============JSX구간============= */ 
@@ -94,7 +81,7 @@ const Detail = (props) => {
                 {/*detail 페이지 카드 요소*/}
                 <div className="row">
                     <div className="col-md-6">
-                        <img src={`https://codingapple1.github.io/shop/shoes${item.id + 1}.jpg`} width="100%" />
+                        <img src={`https://codingapple1.github.io/shop/shoes${item.id + 1}.jpg`} width="100%" height="500px" />
                     </div>
                     <div className="col-md-6">
                         <div className="d-flex align-items-center justify-content-center" style={{ gap: '10px', height: '40px' }}>
@@ -138,15 +125,14 @@ const Detail = (props) => {
                         2초이내 결제시 할인
                     </div>
                     :
-                    ''
+                    <div className="alert alert-danger" id="sale">
+                        이벤트 끝 ~
+                    </div>
                 }
 
                 {/*Tap*/}
                 <DetailTap/>
             </div>
-            <FooterText className={`footer-animation ${footerFade ? 'footEnd' : 'footStart'}`}>
-                {footerMsg}
-            </FooterText>
         </>
     );
 }

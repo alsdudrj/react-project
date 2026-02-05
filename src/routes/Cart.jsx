@@ -4,20 +4,31 @@ import { useFadeAnimation } from "../hooks/FadeAnimation";
 import { addCount, deleteItem } from "../store/cart";
 import { useKakaoAddress } from "../hooks/KakaoAddress";
 import DaumPostcode from 'react-daum-postcode';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import SalesModal from "../components/SalesModal";
+import { FooterText } from "../styled/Detail.styles";
+import { useFooterAlert } from "../hooks/FooterAlert";
 
-const Cart = () => {
+const Cart = ({setFooterFade, setFooterMsg}) => {
     let state = useSelector((state) => {return state});                      //store.js에서 가져온 상품 데이터
 
     const [fade, setFade] = useFadeAnimation();                              //애니메이션을 주기위한 Custom Hook
     const [handleAddress, address, isOpen, setIsOpen] = useKakaoAddress();   //카카오주소 목록 불러오기를 위한 Custom Hook
+    const [detailAddress, setDetailAddress] = useState("");
+
+    const [showSales, setShowSales] = useState(false);                       //구매창 상태관리   
 
     const [checkItems, setCheckItems] = useState(state.cart.map(item => item.id)); //체크된 품목 ID요소 저장
+
     const totalPrice = 
         state.cart.filter(item => checkItems.includes(item.id))
-        .reduce((price, item) => price + (item.price * item.count), 0);
+        .reduce((price, item) => price + (item.price * item.count), 0);      //상품 총액
+    const totalCount = 
+        state.cart.filter(item => checkItems.includes(item.id))
+        .reduce((count, item) => count + item.count, 0);                     //상품 총 갯수
 
-    let dispatch = useDispatch();                                            //state변경함수 사용을 위해 불러옴
+
+    const dispatch = useDispatch();                                            //state변경함수 사용을 위해 불러옴
 
 
     /* ====================== */
@@ -42,9 +53,6 @@ const Cart = () => {
     };
 
 
-
-
-
     /* ================================= */
     /* =============JSX구간============= */
     return(
@@ -54,7 +62,7 @@ const Cart = () => {
                 {/*제목 및 주소 입력 영역*/}
                 <Row className="align-items-center mb-3">
                     <Col>
-                        <h1 className="text-start m-0" style={{ fontWeight: '700' }}>장바구니이다</h1>
+                        <h1 className="text-start m-0" style={{ fontWeight: '700' }}>🛒장바구니이다</h1>
                     </Col>
                     <Col xs={12} md={8} lg={7}>
                         <div className="address-box p-2 border rounded bg-light">
@@ -76,7 +84,8 @@ const Cart = () => {
                                 <input
                                     type="text"
                                     className="form-control form-control-sm" 
-                                    placeholder="상세주소" 
+                                    placeholder="상세주소"
+                                    onChange={(e) => setDetailAddress(e.target.value)}
                                 />
                             </div>
                         </div>
@@ -133,17 +142,18 @@ const Cart = () => {
                         style={{ 
                             position: 'absolute', 
                             left: '50%', 
-                            transform: 'translateX(-50%)', // 본인 너비의 절반만큼 왼쪽으로 밀어서 완벽한 중앙 정렬
+                            transform: 'translateX(-50%)',
                             display: 'flex'
                         }}
                     >
-                        <span style={{ fontSize: '20px', fontWeight: '700', color: '#333'}}>총 {checkItems.length}개 </span>
+                        <span style={{ fontSize: '20px', fontWeight: '700', color: '#333'}}>총 {totalCount}개 </span>
 
                         <Button 
                             variant="outline-danger" 
                             disabled={checkItems.length === 0}
+                            onClick={() => setShowSales(true)}
                         >
-                            구매하기
+                            주문하기
                         </Button>
                     </div>
                 </div>
@@ -216,6 +226,23 @@ const Cart = () => {
                     <DaumPostcode onComplete={handleAddress} />
                 </Modal.Body>
             </Modal>
+
+            {/*주문내역 모달*/}
+            {
+                showSales ?
+                <SalesModal 
+                state={state} 
+                setShowSales={setShowSales}
+                totalPrice={totalPrice}
+                setFooterFade={setFooterFade}
+                setCheckItems={setCheckItems}
+                setFooterMsg={setFooterMsg}
+                address={address}
+                detailAddress={detailAddress}
+                />
+                :
+                ''
+            }
         </>
     );
 }

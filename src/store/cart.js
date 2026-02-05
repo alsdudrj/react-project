@@ -32,8 +32,12 @@ let cart = createSlice({
                     state.splice(i, 1); //해당하는 index에 있는 상품 1개 삭제
                 }
             })
+        },
+        //상품 전체를 삭제하는 함수
+        deleteAllItem(state, action){
+            state.splice(0);
         }
     }
 })
-export let {addCount, addItem, deleteItem} = cart.actions; //state 변경함수 export
+export let {addCount, addItem, deleteItem, deleteAllItem} = cart.actions; //state 변경함수 export
 export default cart;

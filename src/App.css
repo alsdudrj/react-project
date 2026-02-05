@@ -154,8 +154,12 @@ a {
   background-color: white;
 }
 .login-overlay .form-check-input:checked {
-  background-color: blue;
-  border-color: none;
+  background-color: #61DAFB;
+  border-color: #61DAFB;
+}
+.login-checkbox .form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(97, 218, 251, 0.25);
+    border-color: #61DAFB;
 }
 /*애니메이션 설정*/
 @keyframes slideDown { 
@@ -235,6 +239,52 @@ a {
 .white-bg.show-modal{
   transform: translateY(0);
   opacity: 1;
+}
+/*=======================================*/
+
+
+
+/* ====주문 Alert====*/
+.alert-anchor { 
+  position: relative;   
+  display: inline-block;
+}
+/*Alert 설정*/
+.alert-overlay { 
+  position: absolute;
+  top: 2.5rem;
+  left: 0;
+  width: 170px;
+  height: auto;
+  padding: 3px;
+  border-radius: 8px;
+
+  z-index: 100;
+  margin-bottom: 0;
+
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideDown 0.3s ease forwards;
+}
+/*말풍선 꼬리*/
+.alert-overlay::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 10%;
+  transform: translateX(-50%);
+  
+  /* 삼각형 모양 설정 */
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent #f8d7da transparent; 
+}
+/*애니메이션 설정*/
+@keyframes slideDown { 
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 /*=======================================*/
 

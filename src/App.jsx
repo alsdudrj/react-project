@@ -8,6 +8,8 @@ import { useEffect, useState, lazy } from 'react';
 import Sidebar from './routes/Sidebar.jsx';
 import { Col, Container, Row } from 'react-bootstrap';
 import Register from './components/Register.jsx';
+import { useFooterAlert } from './hooks/FooterAlert.jsx';
+import { FooterText } from './styled/Detail.styles.js';
 // import Detail from './routes/Detail.jsx';
 // import Cart from './routes/Cart.jsx';
 const Detail = lazy(() => import('./routes/Detail.jsx')); //lazy방식 import
@@ -20,6 +22,8 @@ function App() {
 
   const [showLogin, setShowLogin] = useState(false); //로그인 폼 상태
   const [showRegister, setShowRegister] = useState(false);
+
+  const [footerFade, setFooterFade, footerMsg, setFooterMsg] = useFooterAlert();  //footer 애니메이션 Custom Hook
 
 
   /* ======================================================== */
@@ -51,8 +55,8 @@ function App() {
               mainCount={mainCount} setMainCount={setMainCount}
               showLogin={showLogin}
             />}/>
-            <Route path='/detail/:id' element={<Detail shoes={shoes}/>}/>
-            <Route path="/cart" element={<Cart/>}/>
+            <Route path='/detail/:id' element={<Detail shoes={shoes} setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+            <Route path="/cart" element={<Cart setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
 
             {/*잘못된 URL 접속시 보야주는 페이지*/}
             <Route path='*' element={<div>존재하지 않는 페이지이다</div>}/> 
@@ -61,6 +65,11 @@ function App() {
 
         {/*Sidebar*/}
         <Sidebar shoes={shoes}/>
+
+        {/*FooterAlert*/}
+        <FooterText className={`footer-animation ${footerFade ? 'footEnd' : 'footStart'}`}>
+          {footerMsg}
+        </FooterText>
       </Container>
     </>
   );
