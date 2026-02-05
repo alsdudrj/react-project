@@ -111,7 +111,7 @@ const SalesModal = ({
                         {
                             showAlert ? 
                                 <Alert className="alert-overlay" variant={'danger'}>
-                                배송지를 입력해라
+                                    ⚠️배송지를 입력해라
                                 </Alert>
                             :
                             ''
