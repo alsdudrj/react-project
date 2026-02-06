@@ -12,7 +12,7 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
         <div className="login-overlay">
             <Form>
                 <Form.Group className="mb-3" controlId="Id">
-                    <Form.Control type="email" placeholder="아이디" />
+                    <Form.Control type="id" placeholder="아이디" />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="Password">
@@ -29,7 +29,11 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
                     </Button>
                 </Form.Group>
                 <div className="d-grid gap-2 mt-1">
-                    <Button onClick={() => { setShowRegister(!showRegister); setShowLogin(false) }} variant="outline-danger" size="lg">
+                    <Button variant="outline-danger" size="lg"
+                    onClick={() => { 
+                        setShowRegister(!showRegister); 
+                        setShowLogin(false);
+                    }} >
                         회원가입
                     </Button>
                  </div>

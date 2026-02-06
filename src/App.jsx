@@ -43,7 +43,11 @@ function App() {
       setShowLogin={setShowLogin} showLogin={showLogin}
       showRegister={showRegister} setShowRegister={setShowRegister}
       />
-      {showRegister == true ? <Register showRegister={showRegister} setShowRegister={setShowRegister}/> : ''}
+      {showRegister == true && 
+      <Register 
+      setShowRegister={setShowRegister}
+      setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}
+      />}
       
 
       <Container fluid className='p-0'>

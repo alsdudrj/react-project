@@ -10,6 +10,22 @@ div {
   position: relative;
   z-index: 10;
 }
+
+.sidebar-wrapper{
+  text-align: center;
+}
+
+.headerName{
+  color: white;
+}
+
+/*애니메이션 설정*/
+@keyframes slideDown { 
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 /*=======================================*/
 
 
@@ -161,13 +177,6 @@ a {
     box-shadow: 0 0 0 0.25rem rgba(97, 218, 251, 0.25);
     border-color: #61DAFB;
 }
-/*애니메이션 설정*/
-@keyframes slideDown { 
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
 /*=======================================*/
 
 
@@ -279,30 +288,10 @@ a {
   border-style: solid;
   border-color: transparent transparent #f8d7da transparent; 
 }
-/*애니메이션 설정*/
-@keyframes slideDown { 
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
 /*=======================================*/
 
 
-/* ====sidebar==== */
-.sidebar-wrapper{
-  text-align: center;
-}
-/*=======================================*/
-
-
-/* ====헤더 이름표사==== */
-.headerName{
-  color: white;
-}
-/*=======================================*/
-
-
+/* ====상품 상세설명==== */
 .tab-container {
   top: 0;
   background: white;
@@ -319,7 +308,48 @@ a {
 }
 
 .tab-item.active {
-  border-bottom: 3px solid #0073e6; /* 쿠팡 특유의 블루 포인트 */
+  border-bottom: 3px solid #0073e6;
   color: #0073e6;
   font-weight: bold;
 }
+/*=======================================*/
+
+
+/* ====회원가입 Alert====*/
+.id-anchor, .password-anchor, .name-anchor, .auth-anchor { 
+  position: relative;   
+  display: block; /* 가로 전체를 차지하도록 변경 */
+  width: 100%;
+  margin-bottom: 1rem; /* 요소 간 간격 확보 */
+}
+/*Alert 설정*/
+.regist-alert-overlay { 
+  position: absolute;
+  top: 2.5rem;
+  left: 0;
+  width: 170px auto;
+  height: auto;
+  padding: 3px;
+  border-radius: 8px;
+
+  z-index: 100;
+  margin-bottom: 0;
+
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideDown 0.3s ease forwards;
+}
+/*말풍선 꼬리*/
+.regist-alert-overlay::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 10%;
+  transform: translateX(-50%);
+  
+  /* 삼각형 모양 설정 */
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent #f8d7da transparent; 
+}
+/*=======================================*/
