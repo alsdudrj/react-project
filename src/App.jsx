@@ -21,7 +21,8 @@ function App() {
   let [mainCount, setMainCount] = useState(1); //메인페이지 더보기 클릭횟수 -> AddItem까지 props 시켜줌
 
   const [showLogin, setShowLogin] = useState(false); //로그인 폼 상태
-  const [showRegister, setShowRegister] = useState(false);
+  const [showFilter, setShowFilter] = useState(false); //검색 필터 폼 상태
+  const [showRegister, setShowRegister] = useState(false); //회원가입 모달 상태
 
   const [footerFade, setFooterFade, footerMsg, setFooterMsg] = useFooterAlert();  //footer 애니메이션 Custom Hook
 
@@ -42,6 +43,7 @@ function App() {
       <Header 
       setShowLogin={setShowLogin} showLogin={showLogin}
       showRegister={showRegister} setShowRegister={setShowRegister}
+      showFilter={showFilter} setShowFilter={setShowFilter}
       />
       {showRegister == true && 
       <Register 

@@ -96,32 +96,30 @@ const SalesModal = ({
                         </div>
                         <Button variant="outline-secondary" onClick={() => setShowSales(false)}>안사</Button>
                         <div className="alert-anchor">
-                        <Button variant="outline-danger" 
-                        onClick={() => {
-                            if(!address){
-                                setShowAlert(true);
+                            <Button variant="outline-danger" 
+                            onClick={() => {
+                                if(!address){
+                                    setShowAlert(true);
 
-                                return;
-                            }else{
-                                setFooterFade('');
-                                setTimeout(() => { setFooterFade('footEnd'); }, 10);
-                                setShowSales(false);
-                                setCheckItems([]);
-                                setFooterMsg('✔️ 주문이 완료되었습니다.');
-                                dispatch(deleteAllItem());
+                                    return;
+                                }else{
+                                    setFooterFade('');
+                                    setTimeout(() => { setFooterFade('footEnd'); }, 10);
+                                    setShowSales(false);
+                                    setCheckItems([]);
+                                    setFooterMsg('✔️ 주문이 완료되었습니다.');
+                                    dispatch(deleteAllItem());
+                                }
+                            }}>
+                            주문하기</Button>
+
+                            {
+                                showAlert == true &&
+                                    <Alert className="alert-overlay" variant={'danger'}>
+                                        ⚠️배송지를 입력해라
+                                    </Alert>
                             }
-                        }}>
-                        주문하기</Button>
-
-                        {
-                            showAlert ? 
-                                <Alert className="alert-overlay" variant={'danger'}>
-                                    ⚠️배송지를 입력해라
-                                </Alert>
-                            :
-                            ''
-                        }
-                    </div>
+                        </div>
                     </Modal.Footer>
                 </Modal.Dialog>
             </div>

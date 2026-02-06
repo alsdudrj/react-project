@@ -68,7 +68,12 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                         <div className="address-box p-2 border rounded bg-light">
                             <p className="mb-1" style={{ fontSize: '13px', color: '#666' }}>배송지 위치</p>
                             <div className="d-flex align-items-center flex-nowrap gap-1 mb-2">
-                                <Button variant="outline-secondary" size="sm" style={{ whiteSpace: 'nowrap', fontSize: '12px', flexShrink: 0 }}>주소불러오기</Button>
+                                <Button variant="outline-secondary" size="sm" style={{ whiteSpace: 'nowrap', fontSize: '12px', flexShrink: 0 }}
+                                onClick={() => {
+                                alert('아직 안만듬')
+                                }}
+                                >    
+                                주소불러오기</Button>
                                 <InputGroup size="sm" style={{ flex: '1 1 auto', display: 'flex'}}>
                                 <input 
                                     type="text"

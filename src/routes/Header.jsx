@@ -4,8 +4,9 @@ import { Button, Container, Form, InputGroup, Nav, Navbar } from "react-bootstra
 import { useNavigate } from "react-router-dom";
 import { useUsername } from "../hooks/Username";
 import LoginForm from "../components/LoginForm";
+import FilterForm from "../components/FilterForm";
 
-const Header = ({showLogin, setShowLogin, showRegister, setShowRegister}) => {
+const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFilter, setShowFilter}) => {
     let navigate = useNavigate();   //URL 이동시 html표시를 도와줌
     let username = useUsername();   //coustom hook을 불러옴
 
@@ -30,17 +31,19 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister}) => {
                     </div>
                 </Nav>
                 <Nav style={{ textAlign: "right" }}>
-                    <InputGroup>
-                            <Form.Control
-                            placeholder="검색 (아직 안만듬)"
-                            aria-label="search"
-                            />
-                            <Button variant="primary"
-                            onClick={() => {
-                                alert('아직 안만들었다고')
-                            }}
-                            >검색</Button>
-                            <Button variant="outline-info">필터</Button>
+                    <InputGroup className="search-anchor">
+                        <Form.Control
+                        placeholder="검색 (아직 안만듬)"
+                        aria-label="search"
+                        />
+                        <Button variant="primary"
+                        onClick={() => {
+                            alert('아직 안만들었다고')
+                        }}
+                        >검색</Button>
+                        <Button variant="outline-info" onClick={() => setShowFilter(!showFilter)}>필터</Button>
+
+                        {showFilter && <FilterForm setShowFilter={setShowFilter}/>}
                     </InputGroup>
                 </Nav>
             </Container>
