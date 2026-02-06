@@ -26,11 +26,16 @@ const SalesModal = ({
     /* =============JSX구간============= */ 
     return(
         <>
-        <div className={`black-bg ${showModal}`} onClick={() => setShowSales(false)}>
+        <div className={`black-bg ${showModal}`}>
             <div
                 className="modal"
                 style={{ display: 'block', position: 'initial' }}
-                >
+                onMouseDown={(e) => {
+                if(e.target === e.currentTarget){
+                    setShowSales(false);
+                }
+                }}
+            >
                 <Modal.Dialog 
                 className={`white-bg ${showModal}`}
                 onClick={(e) => e.stopPropagation()}

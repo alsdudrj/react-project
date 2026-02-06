@@ -77,7 +77,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     /* =============JSX구간============= */ 
     return(
         <>
-            <div className={`container start ${fade}`}> {/*애니메이션 추가*/}
+            <div className={`container start ${fade}`} style={{ minHeight: '1000px', marginBottom: '300px'}}> {/*애니메이션 추가*/}
                 {/*detail 페이지 카드 요소*/}
                 <div className="row">
                     <div className="col-md-6">

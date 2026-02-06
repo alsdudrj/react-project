@@ -24,7 +24,11 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
                     label="날 기억해줘" 
                     className="login-checkbox"
                     />
-                    <Button variant="outline-dark" type="submit">
+                    <Button variant="outline-dark" type="submit"
+                    onClick={() => {
+                        alert('아직 안만듬');
+                    }}
+                    >
                         로그인
                     </Button>
                 </Form.Group>

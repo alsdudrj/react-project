@@ -23,7 +23,7 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister}) => {
                 </Nav>
                 <Nav className="ms-auto headerName" style={{ width: "auto", paddingRight: "15%", textAlign: "right" }}>
                     <div className="login-anchor d-flex gap-2">
-                        <Button variant="outline-light" onClick={() => navigate("/")}>상품추가</Button>
+                        <Button variant="outline-light" onClick={() => {navigate("/"); alert('아직 안만듬');}}>상품추가</Button>
                         <Button variant="outline-light" onClick={() => setShowLogin(!showLogin)}>로그인</Button>
 
                         {showLogin && <LoginForm setShowLogin={setShowLogin} showRegister={showRegister} setShowRegister={setShowRegister}/>}
@@ -32,10 +32,14 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister}) => {
                 <Nav style={{ textAlign: "right" }}>
                     <InputGroup>
                             <Form.Control
-                            placeholder="검색"
+                            placeholder="검색 (아직 안만듬)"
                             aria-label="search"
                             />
-                            <Button variant="primary">검색</Button>
+                            <Button variant="primary"
+                            onClick={() => {
+                                alert('아직 안만들었다고')
+                            }}
+                            >검색</Button>
                             <Button variant="outline-info">필터</Button>
                     </InputGroup>
                 </Nav>

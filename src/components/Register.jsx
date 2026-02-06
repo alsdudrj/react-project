@@ -19,11 +19,19 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
     /* ====회원가입 조건 검사==== */
     const handleRegister = () => {
         const specialCharacters = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/
+        const numberCharacters = /[1234567890]/
+        const space = /\s/
         const koreanCharacters = /[ㄱ-ㅎㅏ-ㅣ가-힣]/;
         const koreanOnly = /[ㄱ-ㅎㅏ-ㅣ]/;
 
+        setOk('');
+
         if(id.length > 8 || id.length < 2){
             setAlertMsg('⚠️ID는 2 ~ 8 글자이다.');
+            setOk('id');
+            return ;
+        }else if(space.test(id)){
+            setAlertMsg('⚠️빈칸 쓰지 말라고');
             setOk('id');
             return ;
         }else if(specialCharacters.test(id) || koreanCharacters.test(id)){
@@ -36,6 +44,10 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             setAlertMsg('⚠️Password는 특문포함 6 ~ 12 글자이다.');
             setOk('password');
             return ;
+        }else if(space.test(password)){
+            setAlertMsg('⚠️Password에 공백을 포함시키려는 거냐');
+            setOk('password');
+            return ;
         }else if(!specialCharacters.test(password)){
             setAlertMsg('⚠️특문을 포함시키라고');
             setOk('password');
@@ -46,7 +58,11 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             setAlertMsg('⚠️이름이 없는것이냐');
             setOk('name');
             return ;
-        }else if (koreanOnly.test(name)){
+        }else if(space.test(name)){
+            setAlertMsg('⚠️빈칸 쓰지 말라고');
+            setOk('name');
+            return ;
+        }else if (koreanOnly.test(name) || specialCharacters.test(name) || numberCharacters.test(name)){
             setAlertMsg('⚠️이게 이름이냐');
             setOk('name');
             return ;
@@ -61,7 +77,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             setOk(true);
             setFooterFade('');
             setTimeout(() => { setFooterFade('footEnd'); }, 10);
-            setFooterMsg('✔️ 회원가입이 완료되었습니다.');
+            setFooterMsg('✔️ 회원가입이 완료되었습니다. (사실 미완성임)');
             setShowRegister(false);
     }
        
@@ -71,11 +87,16 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
     /* =============JSX구간============= */ 
     return(
         <>
-        <div className={`black-bg ${showModal}`} onClick={() => setShowRegister(false)}>
+        <div className={`black-bg ${showModal}`}>
             <div
                 className="modal"
                 style={{ display: 'block', position: 'initial' }}
-                >
+                onMouseDown={(e) => {
+                if(e.target === e.currentTarget){
+                    setShowRegister(false);
+                }
+                }}
+            >
                 <Modal.Dialog 
                 className={`white-bg ${showModal}`}
                 onClick={(e) => e.stopPropagation()}

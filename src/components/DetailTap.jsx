@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { Nav } from "react-bootstrap";
 import DetailTap_ProductData from "./DetailTap_ProductData";
+import DetailTap_Comment from "./DetailTap_Comment";
 
 let DetailTap = memo(({item}) => {                    //memo로 렌더링을 한번만 하게 변경
     let [tab, setTab] = useState(0);            //탭 변환값 기록
@@ -28,9 +29,11 @@ let DetailTap = memo(({item}) => {                    //memo로 렌더링을 한
         return (
             <div className={isFirstRender.current ? 'scaleEnd' : `scaleStart ${scale}`}>
                 {
-                    [<div><img src="/img/test.png"/></div>, 
+                [
+                    <div className="mt-5"><img src="/img/test.png"/></div>, 
                     <DetailTap_ProductData item={item}/>, 
-                    <div>내용3</div>][tab]
+                    <DetailTap_Comment/>
+                ][tab]
                 }
             </div>
         )
