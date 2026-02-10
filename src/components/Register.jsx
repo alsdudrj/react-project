@@ -149,7 +149,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                                 name="role"
                                 id="role-user"
                                 value="general"
-                                className="login-checkbox"
+                                className="register-checkbox"
                                 onInput={(e) => {setAuth(e.target.value); setOk('');}}
                             />
                             <Form.Check
@@ -158,7 +158,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                                 name="role"
                                 id="role-admin"
                                 value="manager"
-                                className="login-checkbox"
+                                className="register-checkbox"
                                 onInput={(e) => {setAuth(e.target.value); setOk('');}}
                             />
                             {

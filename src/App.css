@@ -127,44 +127,44 @@ a {
 /*로그인 폼 설정*/
 .login-overlay { 
   position: absolute;
-  top: 3.8rem;
+  top: 3rem;
   right: 0;
   width: 350px;
-  height: auto;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #868e96;
-  background: #e9ecef;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 25px;
+  
+  background: rgba(30, 41, 59, 0.75); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 
   z-index: 100;
-
   transform: translateY(-20px);
   opacity: 0;
-  animation: slideDown 0.3s ease forwards;
+  animation: slideDown 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 /* 인풋창 설정 */
 .login-overlay .form-control { 
-  background-color: white;   
-  color: black;
-  border: 1px solid black;
-}
-.login-overlay .form-control::placeholder {
-  color: #868e96;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
 }
 .login-overlay .form-control:focus {
-  background-color: transparent;
-  color: black;
-  border-color: none;
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #61DAFB;
+  color: white;
+  box-shadow: 0 0 8px rgba(97, 218, 251, 0.4);
+}
+.login-overlay .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 /*체크박스 설정*/
 .login-checkbox .form-check-label { 
-  color: black;
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
-  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
 }
 .login-overlay .form-check-input {
   background-color: white;
@@ -176,6 +176,54 @@ a {
 .login-checkbox .form-check-input:focus {
     box-shadow: 0 0 0 0.25rem rgba(97, 218, 251, 0.25);
     border-color: #61DAFB;
+}
+
+/* ==소셜 로그인== */
+/*구분선*/
+.social-divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+}
+.social-divider::before, .social-divider::after {
+  content: "";
+  flex-grow: 1;
+  background: rgba(255, 255, 255, 0.2);
+  height: 1px;
+  margin: 0 10px;
+}
+/*소셜 버튼 공통 스타일 및 애니메이션*/
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  height: 45px;
+  border-radius: 8px !important;
+  transition: transform 0.2s, filter 0.2s;
+}
+.btn-social:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.9);
+}
+.btn-social img {
+  width: 18px;
+  height: 18px;
+}
+/*구글버튼*/
+.btn-google {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+/*카카오 버튼*/
+.btn-kakao {
+  background-color: #FEE500 !important;
+  color: #191919 !important;
 }
 /*=======================================*/
 
@@ -190,15 +238,19 @@ a {
 /*filter 폼 설정*/
 .filter-overlay { 
   position: absolute;
-  top: 3.8rem;
+  top: 3rem;
   right: 0;
   width: 350px;
   height: auto;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #868e96;
-  background: #e9ecef;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 25px;
+
+  background: rgba(30, 41, 59, 0.75); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 
   z-index: 1000;
 
@@ -207,38 +259,30 @@ a {
   animation: slideDown 0.3s ease forwards;
 }
 /* 인풋창 설정 */
-.filter-overlay .form-control { 
-  background-color: white;   
-  color: black;
-  border: 1px solid black;
+.filter-overlay .form-select { 
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
 }
-.filter-overlay .form-control::placeholder {
-  color: #868e96;
+.filter-overlay .form-select::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
-.filter-overlay .form-control:focus {
-  background-color: transparent;
-  color: black;
-  border-color: none;
-  box-shadow: none;
-}
-/*체크박스 설정*/
-.filter-checkbox .form-check-label { 
-  color: black;
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
-  margin-top: 3px;
-}
-.filter-overlay .form-check-input {
-  background-color: white;
-}
-.filter-overlay .form-check-input:checked {
-  background-color: #61DAFB;
+.filter-overlay .form-select:focus {
+  background: rgba(255, 255, 255, 0.1);
   border-color: #61DAFB;
+  color: white;
+  box-shadow: 0 0 8px rgba(97, 218, 251, 0.4);
 }
-.filter-checkbox .form-check-input:focus {
-    box-shadow: 0 0 0 0.25rem rgba(97, 218, 251, 0.25);
-    border-color: #61DAFB;
+.filter-overlay .form-select option {
+  background-color: #2b3035;
+  color: white;
+}
+.filter-overlay .form-select:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #61DAFB;
+  color: white;
+  box-shadow: 0 0 8px rgba(97, 218, 251, 0.4);
 }
 /*=======================================*/
 
@@ -311,6 +355,11 @@ a {
 .white-bg.show-modal{
   transform: translateY(0);
   opacity: 1;
+}
+
+.register-check .form-check-label {
+  color: black !important;
+  font-weight: 500 !important;
 }
 /*=======================================*/
 

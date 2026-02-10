@@ -39,7 +39,7 @@ const FilterForm = ({setShowLogin, showRegister, setShowRegister}) => {
                         }
                     </Form.Select>
 
-                    <span className="px-1"> ~ </span>
+                    <span className="px-1" style={{color: "white"}}> ~ </span>
                     {/*최대 사이즈*/}
                     <Form.Select
                     value={maxSize}

@@ -1,8 +1,14 @@
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useKakao } from "../hooks/Kakao";
+import { useGoogle } from "../hooks/Google";
+
 
 const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
     const navigate = useNavigate();
+
+    const [userInfo, loginWithKakao] = useKakao();
+    const {googleUser, loginWithGoogle} = useGoogle();
 
 
     /* ================================= */
@@ -24,7 +30,7 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
                     label="날 기억해줘" 
                     className="login-checkbox"
                     />
-                    <Button variant="outline-dark" type="submit"
+                    <Button variant="outline-light" type="submit"
                     onClick={() => {
                         alert('아직 안만듬');
                     }}
@@ -41,6 +47,33 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
                         회원가입
                     </Button>
                  </div>
+                
+                {/*소셜로그인 버튼*/}
+                <div className="social-divider">
+                    <span>또는</span>
+                </div>
+
+                <div className="d-grid gap-2">
+                    <Button variant="light" className="btn-social btn-google"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        loginWithGoogle();
+                    }}
+                    >
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="google" />
+                        Google로 시작하기
+                    </Button>
+                    
+                    <Button className="btn-social btn-kakao"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        loginWithKakao();
+                    }}
+                    >
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg" alt="kakao" />
+                        카카오로 시작하기
+                    </Button>
+                </div>
             </Form>
         </div>
         </>
