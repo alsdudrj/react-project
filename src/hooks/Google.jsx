@@ -19,5 +19,5 @@ export function useGoogle() {
         onError: (error) => console.error("구글 로그인 실패:", error),
     });
 
-    return { googleUser, loginWithGoogle };
+    return [ googleUser, loginWithGoogle ];
 };

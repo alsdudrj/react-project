@@ -2,14 +2,17 @@ import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useKakao } from "../hooks/Kakao";
 import { useGoogle } from "../hooks/Google";
+import { useState } from "react";
+import { useLogin } from "../hooks/Login";
 
 
 const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
     const navigate = useNavigate();
 
     const [userInfo, loginWithKakao] = useKakao();
-    const {googleUser, loginWithGoogle} = useGoogle();
+    const [googleUser, loginWithGoogle] = useGoogle();
 
+    const [handleLogin, userName, setUserName, password, setPassword] = useLogin();
 
     /* ================================= */
     /* =============JSX구간============= */ 
@@ -18,11 +21,17 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
         <div className="login-overlay">
             <Form>
                 <Form.Group className="mb-3" controlId="Id">
-                    <Form.Control type="id" placeholder="아이디" />
+                    <Form.Control type="id" placeholder="아이디" 
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="Password">
-                    <Form.Control type="password" placeholder="패스워드" />
+                    <Form.Control type="password" placeholder="패스워드"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    />
                 </Form.Group>
                 <Form.Group className="d-flex justify-content-between align-items-center" controlId="Checkbox">
                     <Form.Check 
@@ -31,9 +40,7 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
                     className="login-checkbox"
                     />
                     <Button variant="outline-light" type="submit"
-                    onClick={() => {
-                        alert('아직 안만듬');
-                    }}
+                    onClick={() => {handleLogin}}
                     >
                         로그인
                     </Button>

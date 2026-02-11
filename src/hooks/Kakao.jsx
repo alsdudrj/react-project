@@ -27,7 +27,7 @@ export function useKakao () {
         window.Kakao.API.request({
             url: '/v2/user/me',
             success: (res) => {
-                console.log("✅ 카카오 유저 정보 획득 성공!");
+                console.log("카카오 유저확인 완료");
                 console.log("유저 상세 데이터:", res);
                 setUserInfo(res);
             },

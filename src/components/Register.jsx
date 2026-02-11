@@ -26,8 +26,8 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
 
         setOk('');
 
-        if(id.length > 8 || id.length < 2){
-            setAlertMsg('⚠️ID는 2 ~ 8 글자이다.');
+        if(id.length > 12 || id.length < 2){
+            setAlertMsg('⚠️ID는 2 ~ 12 글자이다.');
             setOk('id');
             return ;
         }else if(space.test(id)){
@@ -40,8 +40,8 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             return ;
         }
 
-        if (password.length < 6 || password.length > 12){
-            setAlertMsg('⚠️Password는 특문포함 6 ~ 12 글자이다.');
+        if (password.length < 6){
+            setAlertMsg('⚠️Password는 특문포함 6글자 이상이다.');
             setOk('password');
             return ;
         }else if(space.test(password)){
@@ -74,11 +74,47 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             return ;
         }
 
-            setOk(true);
+            // setOk(true);
+            // setFooterFade('');
+            // setTimeout(() => { setFooterFade('footEnd'); }, 10);
+            // setFooterMsg('✔️ 회원가입이 완료되었습니다. (사실 미완성임)');
+            // setShowRegister(false);
+
+        fetch("http://localhost:8765/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                userName: id,
+                password: password,
+                displayName: name,
+                auth: auth
+            })
+        })
+        .then(async res => {
+            const msg = await res.text(); // 서버 메시지 읽기
+
+            if (!res.ok) {
+                if (res.status === 409) {
+                    throw new Error("이미 존재하는 아이디이다.");
+                } else {
+                    throw new Error(msg || "회원가입 실패");
+                }
+            }
+
+            return msg;
+        })
+        .then(data => {
             setFooterFade('');
             setTimeout(() => { setFooterFade('footEnd'); }, 10);
-            setFooterMsg('✔️ 회원가입이 완료되었습니다. (사실 미완성임)');
+            setFooterMsg('✔️ 회원가입 완료!');
             setShowRegister(false);
+        })
+        .catch(err => {
+            setAlertMsg('⚠️ ' + err.message);
+            setOk('id');
+        });
     }
        
 
@@ -148,7 +184,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                                 label="일반인"
                                 name="role"
                                 id="role-user"
-                                value="general"
+                                value="USER"
                                 className="register-checkbox"
                                 onInput={(e) => {setAuth(e.target.value); setOk('');}}
                             />
@@ -157,7 +193,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                                 label="관리자"
                                 name="role"
                                 id="role-admin"
-                                value="manager"
+                                value="ADMIN"
                                 className="register-checkbox"
                                 onInput={(e) => {setAuth(e.target.value); setOk('');}}
                             />
