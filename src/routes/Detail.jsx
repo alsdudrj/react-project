@@ -7,7 +7,7 @@ import { useLike } from "../hooks/Like";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
 import { Button } from "react-bootstrap";
 import data from "../data/data";
-import { useToken } from "../hooks/token";
+import { useToken } from "../hooks/Token";
 
 const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     let {id} = useParams();                             //주소로 접속시 url 파라미터를 받아옴

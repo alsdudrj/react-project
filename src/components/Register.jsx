@@ -80,7 +80,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             // setFooterMsg('✔️ 회원가입이 완료되었습니다. (사실 미완성임)');
             // setShowRegister(false);
 
-        fetch("http://localhost:8765/register", {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
