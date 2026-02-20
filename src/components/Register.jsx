@@ -143,7 +143,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
 
                     <Modal.Body className="px-5">
                         <Form.Group className="mb-3 id-anchor" controlId="formBasicId">
-                            <Form.Control type="id" placeholder="아이디 (영문 숫자만으로 2~8글자)" 
+                            <Form.Control type="id" placeholder="아이디 (영문 숫자만으로 2 ~ 8글자)" 
                             onChange={(e) => { setId(e.target.value); setOk(''); }}
                             />
                         {
@@ -155,7 +155,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                         </Form.Group>
 
                         <Form.Group className="mb-3 password-anchor" controlId="formBasicPassword">
-                            <Form.Control type="password" placeholder="패스워드 (특문 포함 6~12글자)"
+                            <Form.Control type="password" placeholder="패스워드 (특문 포함 6글자 이상)"
                             onChange={(e) => {setPassword(e.target.value); setOk('');}}
                             />
                         {

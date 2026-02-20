@@ -7,9 +7,7 @@ import { useLike } from "../hooks/Like";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
 import { Button } from "react-bootstrap";
 import data from "../data/data";
-import { FooterText } from "../styled/Detail.styles";
-import { useFooterAlert } from "../hooks/FooterAlert";
-
+import { useToken } from "../hooks/token";
 
 const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     let {id} = useParams();                             //주소로 접속시 url 파라미터를 받아옴
@@ -23,6 +21,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     let dispatch = useDispatch();                       //redux state변경함수를 사용하기 위해 불러옴
 
     const [fade, setFade] = useFadeAnimation();         //애니메이션을 주기위한 Custom Hook
+    const [token, userRole] = useToken();               //유저정보 확인을 위한 Custom Hook
 
     const cartData = useSelector((state) => state.cart);     //store.js에 cart 데이터를 불러옴
 
@@ -43,6 +42,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
             }, 2000);
         }, []);
 
+
     /* ========================================== */
     /* ====인풋박스에 숫자말고 다른거 띄우면 욕하기==== */
     useEffect(() => {
@@ -54,11 +54,13 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
         }else setNumAlert(false);
     }, [inputValue]);
 
+
     /* =========================================================== */
     /* ====url파라미터가 data에 없는 상품으로 들어왔을때 보여줄 내용 ==== */
     if (!item) {
         return <div>상품을 찾을 수 없습니다.</div>;
     }
+
 
     /* ================================================================ */
     /* ====detail페이지 접속시 해당페이지의 상품 id를 sessionStorage에 넣음==== */
@@ -94,27 +96,29 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                         <h4 className="pt-5">{item.title}</h4>
                         <p>제조사: {item.content}</p>
                         <p>{new Intl.NumberFormat('ko-KR').format(item.price)}원</p>
-                        <Button variant="outline-success" onClick={() => {
-                            let isExist = cartData.find((v) => v.id === item.id);
+                        {token &&
+                            <Button variant="outline-success" onClick={() => {
+                                let isExist = cartData.find((v) => v.id === item.id);
 
-                            if(isExist) {
-                                setFooterMsg('⚠️ 이미 장바구니에 있는 상품입니다.');
-                            }else{
-                                dispatch(addItem({
-                                    id: item.id,
-                                    name: item.title,
-                                    content: item.content,
-                                    price: item.price,
-                                    count: 1
-                                }));
-                                setFooterMsg('✔️ 장바구니에 담았습니다.');
-                            }
-                            setFooterFade('');
+                                if(isExist) {
+                                    setFooterMsg('⚠️ 이미 장바구니에 있는 상품입니다.');
+                                }else{
+                                    dispatch(addItem({
+                                        id: item.id,
+                                        name: item.title,
+                                        content: item.content,
+                                        price: item.price,
+                                        count: 1
+                                    }));
+                                    setFooterMsg('✔️ 장바구니에 담았습니다.');
+                                }
+                                setFooterFade('');
 
-                            setTimeout(() => { setFooterFade('footEnd'); }, 10)
-                        }}>
-                            장바구니 담기
-                        </Button>
+                                setTimeout(() => { setFooterFade('footEnd'); }, 10)
+                            }}>
+                                장바구니 담기
+                            </Button>
+                        }
                         <br />
                     {like}<span onClick={() => {addLike()}}>♥</span>
                     </div>

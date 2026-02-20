@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
-export function useLogin () {
+export function useLogin (setShowLogin, setFooterFade, setFooterMsg, onLoginSuccess) {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
-
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -22,18 +22,28 @@ export function useLogin () {
             })
             });
 
-            if (!res.ok) throw new Error("로그인 실패");
+            if (!res.ok) {
+                const errorText = await res.text(); 
+                throw new Error(errorText || "로그인 서버 에러");
+            }
 
             const token = await res.text();
 
             // 토큰 저장
             localStorage.setItem("token", token);
+            window.dispatchEvent(new Event('login-change')); //화면 상태변화 감지
+
+            if(onLoginSuccess) onLoginSuccess(jwtDecode(token));
 
             setShowLogin(false);
-            navigate("/");
+            setFooterFade('');
+            setTimeout(() => { setFooterFade('footEnd'); }, 10);
+            setFooterMsg("🔵 로그인 성공");
 
         } catch (err) {
-            alert("아이디 또는 비밀번호 틀림");
+            setFooterFade('');
+            setTimeout(() => { setFooterFade('footEnd'); }, 10);
+            setFooterMsg("❌ " + err.message);
         }
     };
 

@@ -6,13 +6,13 @@ import { useState } from "react";
 import { useLogin } from "../hooks/Login";
 
 
-const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
+const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, setFooterMsg, onLoginSuccess}) => {
     const navigate = useNavigate();
 
     const [userInfo, loginWithKakao] = useKakao();
     const [googleUser, loginWithGoogle] = useGoogle();
 
-    const [handleLogin, userName, setUserName, password, setPassword] = useLogin();
+    const [handleLogin, userName, setUserName, password, setPassword] = useLogin(setShowLogin, setFooterFade, setFooterMsg, onLoginSuccess);
 
     /* ================================= */
     /* =============JSX구간============= */ 
@@ -40,7 +40,7 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister}) => {
                     className="login-checkbox"
                     />
                     <Button variant="outline-light" type="submit"
-                    onClick={() => {handleLogin}}
+                    onClick={handleLogin}
                     >
                         로그인
                     </Button>

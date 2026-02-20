@@ -41,14 +41,15 @@ function App() {
   return (
     <>
       <Header 
-      setShowLogin={setShowLogin} showLogin={showLogin}
-      showRegister={showRegister} setShowRegister={setShowRegister}
-      showFilter={showFilter} setShowFilter={setShowFilter}
+        setShowLogin={setShowLogin} showLogin={showLogin}
+        showRegister={showRegister} setShowRegister={setShowRegister}
+        showFilter={showFilter} setShowFilter={setShowFilter}
+        setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}
       />
       {showRegister == true && 
       <Register 
-      setShowRegister={setShowRegister}
-      setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}
+        setShowRegister={setShowRegister}
+        setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}
       />}
       
 
