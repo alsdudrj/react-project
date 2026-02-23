@@ -10,7 +10,7 @@ export function useFooterAlert() {
         if (footerFade === 'footEnd'){
             let timer = setTimeout(() => {
                 setFooterFade('');
-            }, 2000);
+            }, 1000);
 
             return () => clearTimeout(timer);
         }

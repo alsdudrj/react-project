@@ -11,6 +11,7 @@ import Register from './components/Register.jsx';
 import { useFooterAlert } from './hooks/FooterAlert.jsx';
 import { FooterText } from './styled/Detail.styles.js';
 import AddProduct from './routes/AddProduct.jsx';
+import { useLogout } from './hooks/Logout.jsx';
 // import Detail from './routes/Detail.jsx';
 // import Cart from './routes/Cart.jsx';
 const Detail = lazy(() => import('./routes/Detail.jsx')); //lazy방식 import
@@ -27,6 +28,25 @@ function App() {
 
   const [footerFade, setFooterFade, footerMsg, setFooterMsg] = useFooterAlert();  //footer 애니메이션 Custom Hook
 
+  const logout = useLogout(); //세션만료시 로그아웃을 위한 custom hook
+
+  /* ======================================== */
+  /* ====SessionStorage에 저장한 메세지 출력====*/
+  useEffect(() => {
+    const pendingMsg = sessionStorage.getItem("logoutMessage");
+    if (pendingMsg) {
+        // 푸터 메시지 띄우기 로직
+        setFooterFade('');
+        setTimeout(() => { 
+            setFooterFade('footEnd'); 
+            setFooterMsg(pendingMsg);
+        }, 100);
+
+        // 확인했으니 삭제
+        sessionStorage.removeItem("logoutMessage");
+    }
+}, [setFooterFade, setFooterMsg]);
+
 
   /* ======================================================== */
   /* ====홈페이지 첫 접속시 sessionStorage에 본 상품 배열 생성==== */
@@ -35,6 +55,20 @@ function App() {
       sessionStorage.setItem('watchItem', JSON.stringify([]))  
     }
   },[]);
+
+  const authenticatedFetch = async (url, options) => {
+    const res = await fetch(url, options);
+
+    if (res.status === 401) {
+        // 401 Unauthorized = 토큰 만료 혹은 유효하지 않음
+        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+        localStorage.removeItem("token"); // 토큰 삭제
+        window.location.href = "/login";   // 로그인 페이지로 강제 이동
+        return;
+    }
+
+    return res;
+};
 
 
   /* ================================== */

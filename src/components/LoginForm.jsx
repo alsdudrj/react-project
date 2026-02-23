@@ -45,6 +45,11 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, 
                         로그인
                     </Button>
                 </Form.Group>
+
+                <div className="social-divider">
+                    <span>또는</span>
+                </div>
+
                 <div className="d-grid gap-2 mt-1">
                     <Button variant="outline-danger" size="lg"
                     onClick={() => { 
@@ -53,7 +58,7 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, 
                     }} >
                         회원가입
                     </Button>
-                 </div>
+                </div>
                 
                 {/*소셜로그인 버튼*/}
                 <div className="social-divider">

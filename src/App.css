@@ -465,3 +465,44 @@ a {
   border-color: transparent transparent #f8d7da transparent; 
 }
 /*=======================================*/
+
+
+
+/* ====상품추가 Alert====*/
+.img-anchor, .title-anchor, .price-anchor, .origin-anchor, .producer-anchor, .content-anchor { 
+  position: relative;   
+  display: block; /* 가로 전체를 차지하도록 변경 */
+  width: 100%;
+  margin-bottom: 1rem; /* 요소 간 간격 확보 */
+}
+/*Alert 설정*/
+.product-alert-overlay { 
+  position: absolute;
+  top: 5rem;
+  left: 0;
+  width: 170px auto;
+  height: auto;
+  padding: 3px;
+  border-radius: 8px;
+
+  z-index: 100;
+  margin-bottom: 0;
+
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideDown 0.3s ease forwards;
+}
+/*말풍선 꼬리*/
+.product-alert-overlay::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 10%;
+  transform: translateX(-50%);
+  
+  /* 삼각형 모양 설정 */
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent #f8d7da transparent; 
+}
+/*=======================================*/

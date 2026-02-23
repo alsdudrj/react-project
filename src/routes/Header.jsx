@@ -8,6 +8,7 @@ import FilterForm from "../components/FilterForm";
 import { jwtDecode } from "jwt-decode";
 import { useToken } from "../hooks/Token";
 import { useState } from "react";
+import { useLogout } from "../hooks/Logout";
 
 const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFilter, setShowFilter, setFooterFade, setFooterMsg}) => {
     let navigate = useNavigate();   //URL 이동시 html표시를 도와줌
@@ -33,7 +34,7 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFil
                 <Nav className="ms-auto headerName" style={{ width: "auto", paddingRight: "15%", textAlign: "right" }}>
                     <div className="login-anchor d-flex gap-2">
                         {userRole === 'ROLE_ADMIN' &&
-                            <Button variant="outline-light" onClick={() => {navigate("/"); alert('아직 안만듬');}}>상품추가</Button>
+                            <Button variant="outline-light" onClick={() => {navigate("/add-product");}}>상품추가</Button>
                         }
                         {!token ?
                             <Button variant="outline-light" onClick={() => setShowLogin(!showLogin)}>로그인</Button>
@@ -46,6 +47,7 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFil
                                 setFooterFade('');
                                 setTimeout(() => { setFooterFade('footEnd'); }, 10);
                                 setFooterMsg("🔴 로그아웃 성공");
+                                navigate('/');
                             }}
                             >로그아웃</Button>
                         }

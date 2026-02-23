@@ -74,12 +74,6 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             return ;
         }
 
-            // setOk(true);
-            // setFooterFade('');
-            // setTimeout(() => { setFooterFade('footEnd'); }, 10);
-            // setFooterMsg('✔️ 회원가입이 완료되었습니다. (사실 미완성임)');
-            // setShowRegister(false);
-
         fetch(`${import.meta.env.VITE_API_BASE_URL}/register`, {
             method: "POST",
             headers: {
