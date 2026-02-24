@@ -428,7 +428,7 @@ a {
 
 
 /* ====회원가입 Alert====*/
-.id-anchor, .password-anchor, .name-anchor, .auth-anchor { 
+.id-anchor, .password-anchor, .name-anchor, .auth-anchor, .address-anchor { 
   position: relative;   
   display: block; /* 가로 전체를 차지하도록 변경 */
   width: 100%;

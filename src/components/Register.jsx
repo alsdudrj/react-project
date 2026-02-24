@@ -1,10 +1,13 @@
-import { Alert, Button, Form, Modal } from "react-bootstrap";
+import { Alert, Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { useModalAnimation } from "../hooks/ModalAnimation";
 import { useEffect, useState } from "react";
+import { useKakaoAddress } from "../hooks/KakaoAddress";
+import DaumPostcode from 'react-daum-postcode';
 
 const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
 
     const [showModal, setShowModal] = useModalAnimation();
+    const [handleAddress, address, isOpen, setIsOpen] = useKakaoAddress();   //카카오주소 목록 불러오기를 위한 Custom Hook
 
     /* ====Alert 창 제어==== */
     const [alertMsg, setAlertMsg] = useState('');
@@ -15,6 +18,15 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [auth, setAuth] = useState('');
+    const [userAddress, setUserAddress] = useState('');
+    const [userDetailAddress, setUserDetailAddress] = useState('');
+
+    //KakaoAddress 훅에서 받은 주소 값을 useState에 저장
+    useEffect(() => {
+    if (address) {
+            setUserAddress(address);
+        }
+    }, [address]);
 
     /* ====회원가입 조건 검사==== */
     const handleRegister = () => {
@@ -68,6 +80,12 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             return ;
         }
 
+        if (!userAddress){
+            setAlertMsg('⚠️노숙자 인것이냐');
+            setOk('address');
+            return ;
+        }
+
         if (!auth){
             setAlertMsg('⚠️빈칸이 있지 않느냐');
             setOk('auth');
@@ -83,7 +101,9 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                 userName: id,
                 password: password,
                 displayName: name,
-                auth: auth
+                auth: auth,
+                address: userAddress,
+                detailAddress: userDetailAddress
             })
         })
         .then(async res => {
@@ -172,6 +192,34 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                         }
                         </Form.Group>
 
+                        <Form.Group className="mb-3 address-anchor" controlId="formBasicName">
+                            <InputGroup size="sm" style={{ flex: '1 1 auto', display: 'flex'}}>
+                                <input 
+                                    type="text"
+                                    className="form-control form-control-sm bg-white"
+                                    value={userAddress}
+                                    onChange={(e) => {setUserAddress(e.target.value); setOk('');}}
+                                    placeholder="주소선택"
+                                    readOnly
+                                /><Button variant="outline-secondary"
+                                    onClick={() => setIsOpen(true)}
+                                    style={{ whiteSpace: 'nowrap', fontSize: '12px', flexShrink: 0 }}
+                                >주소선택</Button>
+                            </InputGroup>
+                                <input
+                                    type="text"
+                                    className="form-control form-control-sm" 
+                                    placeholder="상세주소"
+                                    onChange={(e) => setUserDetailAddress(e.target.value)}
+                                />
+                            {
+                            ok === 'address' &&
+                                <Alert className="regist-alert-overlay" variant={'danger'}>
+                                    {alertMsg}
+                                </Alert>
+                            }
+                        </Form.Group>
+
                         <Form.Group className="auth-anchor" controlId="formBasicAuth">
                             <Form.Check
                                 type="radio"
@@ -209,6 +257,21 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                 </Modal.Dialog>
             </div>
         </div>
+
+        {/* 주소 검색 모달 */}
+            <Modal 
+                show={isOpen} 
+                onHide={() => setIsOpen(false)}
+                style={{zIndex: 99999}}
+                backdropStyle={{zIndex: 99998}}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>주소 검색</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <DaumPostcode onComplete={handleAddress} />
+                </Modal.Body>
+            </Modal>
         </>
     );
 }
