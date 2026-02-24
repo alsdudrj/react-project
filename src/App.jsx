@@ -19,7 +19,8 @@ const Cart = lazy(() => import('./routes/Cart.jsx'));
 
 
 function App() {
-  let [shoes, setShoes] = useState(data.slice(0, 3)); //서버에서 가져온 데이터(라고 침)
+  // let [shoes, setShoes] = useState(data.slice(0, 3)); //서버에서 가져온 데이터(라고 침)
+  let [shoes, setShoes] = useState([]);        //상품추가 기능에 따른 배열 초기화
   let [mainCount, setMainCount] = useState(1); //메인페이지 더보기 클릭횟수 -> AddItem까지 props 시켜줌
 
   const [showLogin, setShowLogin] = useState(false); //로그인 폼 상태

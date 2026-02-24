@@ -469,7 +469,7 @@ a {
 
 
 /* ====상품추가 Alert====*/
-.img-anchor, .title-anchor, .price-anchor, .origin-anchor, .producer-anchor, .content-anchor { 
+.img-anchor, .title-anchor, .price-anchor, .origin-anchor, .producer-anchor, .content-anchor, .size-anchor, .sizeQty-anchor { 
   position: relative;   
   display: block; /* 가로 전체를 차지하도록 변경 */
   width: 100%;
