@@ -92,10 +92,10 @@ const Home = (props) => {
                 </Row>
             </Container>
             {/*더보기 버튼*/}
-            <AddItem 
+            {/* <AddItem 
             shoes={props.shoes} setShoes={props.setShoes}
             mainCount={props.mainCount} setMainCount={props.setMainCount}
-            />
+            /> */}
         </div>
         </>
     );

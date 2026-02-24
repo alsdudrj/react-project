@@ -11,12 +11,14 @@ const Sidebar = (props) => {
     let [item, setItem] = useState([]); //sessionStorage에서 뽑은 상품 정보를 저장할 곳
     let location = useLocation();       //현재 주소의 정보를 반환받음
 
+    let e = props.shoes;
+
     useEffect(() => {
         let localItemId = JSON.parse(sessionStorage.getItem('watchItem')) || []; //sessionStorage에 있는 id값을 가져옴
         
         //검사 기준을 sessionStorage로 변경
         const result = localItemId.map(id =>             //sessionStorage값을 id로 뽑음
-            data.find(item => item.id === id)            //뽑은 id중 shoes에 있는 id가 일치하는 값을 저장
+            props.shoes.find(item => item.id === id)            //뽑은 id중 shoes에 있는 id가 일치하는 값을 저장
         ).filter(Boolean);                               //v => Boolean(v) / undifined의 경우 false로 바꿔줌 / filter(false) >> 제거
 
         setItem(result);
@@ -47,7 +49,7 @@ const Sidebar = (props) => {
                     return(
                         <div key={e.id}>
                             <SidebarImg onClick={() => navigate(`/detail/${e.id}`)} 
-                            src={`https://codingapple1.github.io/shop/shoes${e.id + 1}.jpg`} 
+                            src={e.imgUrl || `https://via.placeholder.com/150`}
                             />
                             <SidebarH6 onClick={() => navigate(`/detail/${e.id}`)}>{e.title}</SidebarH6>
                         </div>
