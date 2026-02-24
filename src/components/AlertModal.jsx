@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useModalAnimation } from "../hooks/ModalAnimation";
 import { Button, Modal } from "react-bootstrap";
 
-const AlertModal = ({setShowAlertModal, onSubmit}) => {
+const AlertModal = ({setShowAlertModal, onAction, Msg, okMsg}) => {
     const [showModal, setShowModal] = useModalAnimation();  //Modal 애니메이션
 
     return(
@@ -22,7 +22,7 @@ const AlertModal = ({setShowAlertModal, onSubmit}) => {
                 onClick={(e) => e.stopPropagation()}
                 >
                     <Modal.Header className="text-center">
-                        <Modal.Title className="w-100">진짜로 등록하겠습니까?</Modal.Title>
+                        <Modal.Title className="w-100">{Msg}</Modal.Title>
                     </Modal.Header> 
 
                     <Modal.Footer className="justify-content-center">
@@ -30,10 +30,10 @@ const AlertModal = ({setShowAlertModal, onSubmit}) => {
                             <Button variant="outline-danger" 
                             onClick={() => {
                                     setShowAlertModal(false);
-                                    onSubmit();
+                                    onAction();
                                 }
                             }>
-                            등록하기</Button>
+                            {okMsg}</Button>
                     </Modal.Footer>
                 </Modal.Dialog>
             </div>

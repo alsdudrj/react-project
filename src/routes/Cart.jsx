@@ -189,7 +189,7 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                                             }}
                                         />
                                         <div className="cart-image-box">
-                                            <img src={`https://codingapple1.github.io/shop/shoes${item.id + 1}.jpg`}/>
+                                            <img src={item.imgUrl}/>
                                         </div>
                                         <Card.Body className="text-center p-2 d-flex flex-column">
                                             <Card.Title>{item.name}</Card.Title>

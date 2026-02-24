@@ -444,7 +444,11 @@ function AddProduct({setFooterFade, setFooterMsg}) {
         </Container>
 
         {/*Alert모달*/}
-        {showAlertModal && <AlertModal setShowAlertModal={setShowAlertModal} onSubmit={onSubmit}/>}
+        {showAlertModal && 
+        <AlertModal setShowAlertModal={setShowAlertModal} onAction={onSubmit} 
+        Msg='정말로 등록하시겠습니까?'
+        okMsg='등록한다'
+        />}
         </>
     );
 }

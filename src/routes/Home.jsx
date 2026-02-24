@@ -80,7 +80,7 @@ const Home = (props) => {
             <Container>
                 <Row>
                     {/*map을 이용하여 props로 받아온 data 갯수 만큼 카드생성을 반복*/}
-                    {Array.isArray(props.shoes) ? (
+                    {Array.isArray(props.shoes) && props.shoes.length > 0 ? (
                             props.shoes.map((e, i) => (
                             <Item shoes={e} key={e.id || i} />
                         ))
