@@ -73,7 +73,7 @@ const SalesModal = ({
                                             return(
                                                 <>
                                                     <tr key={i}>
-                                                        <td>{item.name}</td>
+                                                        <td>{item.name}({item.size})</td>
                                                         <td>{item.count}</td>
                                                         <td>{new Intl.NumberFormat('ko-KR').format(itemPrice)}원</td>
                                                     </tr>

@@ -18,13 +18,13 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
 
     const [showSales, setShowSales] = useState(false);                       //구매창 상태관리   
 
-    const [checkItems, setCheckItems] = useState(state.cart.map(item => item.id)); //체크된 품목 ID요소 저장
+    const [checkItems, setCheckItems] = useState(state.cart.map(item => `${item.id}-${item.size}`)); //체크된 품목 ID요소 저장
 
     const totalPrice = 
-        state.cart.filter(item => checkItems.includes(item.id))
+        state.cart.filter(item => checkItems.includes(`${item.id}-${item.size}`))
         .reduce((price, item) => price + (item.price * item.count), 0);      //상품 총액
     const totalCount = 
-        state.cart.filter(item => checkItems.includes(item.id))
+        state.cart.filter(item => checkItems.includes(`${item.id}-${item.size}`))
         .reduce((count, item) => count + item.count, 0);                     //상품 총 갯수
 
 
@@ -33,11 +33,11 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
 
     /* ====================== */
     /* ====체크박스 상태변경==== */
-    const handleSingleCheck = (checked, id) => {
+    const handleSingleCheck = (checked, uniqueKey) => {
         if (checked) {
-            setCheckItems(prev => [...prev, id]);               //현재 체크id와 누른 체크id 합침
+            setCheckItems(prev => [...prev, uniqueKey]);               //현재 체크id와 누른 체크id 합침
         } else {
-            setCheckItems(checkItems.filter((v) => v !== id));  //체크 해제시 해제한 id 제외
+            setCheckItems(checkItems.filter((v) => v !== uniqueKey));  //체크 해제시 해제한 id 제외
         }
     };
 
@@ -45,7 +45,7 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
     /* ====체크박스 전체변경==== */
     const handleAllCheck = (checked) => {
         if (checked) {
-            const allItemId = state.cart.map(item => item.id);  //모든 id를 불러와서 넣음
+            const allItemId = state.cart.map(item => `${item.id}-${item.size}`);  //모든 id를 불러와서 넣음
             setCheckItems(allItemId);
         } else {
             setCheckItems([]);                                  //체크 해제시 배열을 비움
@@ -102,7 +102,7 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                 <div className="d-flex align-items-center mb-3" style={{ paddingLeft: '10px' }}>
                     <input 
                         type="checkbox" 
-                        id="all-check"
+                        id="all-check-main"
                         onChange={(e) => handleAllCheck(e.target.checked)}
                         checked={
                             checkItems.length === state.cart.length && state.cart.length !== 0
@@ -171,12 +171,14 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                         {
                             state.cart.map((item, i) => 
                                 <>
-                                    <Card style={{ width: '100%', position: 'relative', overflow: 'hidden' }} key={i}>
+                                    <Card 
+                                    style={{ width: '100%', position: 'relative', overflow: 'hidden' }} 
+                                    key={`${item.id}-${item.size}`}>
                                         <input 
                                             type="checkbox" 
-                                            id="all-check"
-                                            checked={checkItems.includes(item.id)}
-                                            onChange={(e) => handleSingleCheck(e.target.checked, item.id)}
+                                            id={`${item.id}-${item.size}`}
+                                            checked={checkItems.includes(`${item.id}-${item.size}`)}
+                                            onChange={(e) => handleSingleCheck(e.target.checked, `${item.id}-${item.size}`)}
                                             style={{ 
                                                 position: 'absolute',
                                                 top: '12px',
@@ -193,10 +195,13 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                                         </div>
                                         <Card.Body className="text-center p-2 d-flex flex-column">
                                             <Card.Title>{item.name}</Card.Title>
+                                            <Card.Text className="mb-1" style={{ fontWeight: 'bold', color: '#007bff' }}>
+                                                사이즈: {item.size}
+                                            </Card.Text>
                                             <Card.Text>{item.content}</Card.Text>
                                             <div className="d-flex justify-content-center align-items-center gap-2 mb-3">
                                                 <Card.Text className="mb-0">{new Intl.NumberFormat('ko-KR').format(item.price * item.count)}원</Card.Text>
-                                                <input type="number" min="1" value={item.count} style={{ width: "40px", textAlign: "center" }}
+                                                <input type="number" min="1" max="5" value={item.count} style={{ width: "40px", textAlign: "center" }}
                                                     onChange={(e) => {
                                                         let value = parseInt(e.target.value);
 
@@ -205,13 +210,14 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
 
                                                         dispatch(addCount({
                                                             id: item.id,
+                                                            size: item.size,
                                                             newCount: value
                                                         }));
                                                     }}
                                                 />
                                             </div>
                                             <div className="d-flex justify-content-center gap-2 mt-auto">
-                                                <Button variant="outline-danger" onClick={() => dispatch(deleteItem(item.id))}>제거</Button>
+                                                <Button variant="outline-danger" onClick={() => dispatch(deleteItem({id : item.id, size: item.size}))}>제거</Button>
                                             </div>
                                         </Card.Body>
                                     </Card>

@@ -129,7 +129,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                 navigate("/"); 
             }
         } catch (err) {
-            console.error("✔️ 상품 삭제 실패", err);
+            console.error("상품 삭제 실패", err);
             setFooterFade('');
             setTimeout(() => { setFooterFade('footEnd'); }, 10);
             setFooterMsg('⚠️ 상품 삭제 실패: ' + err);
@@ -185,12 +185,14 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                         {token &&
                             <Button variant="outline-success" onClick={() => {
                                 if (!selectedSize) {
-                                    alert("사이즈를 선택해주세요!");
+                                    setFooterFade('');
+                                    setTimeout(() => { setFooterFade('footEnd'); }, 10);
+                                    setFooterMsg('⚠️ 상품 사이즈 선택 필요');
                                     return;
                                 }
 
-                                //장바구니 중복 검사
-                                let isExist = cartData.find((v) => v.id === item.id);
+                                //장바구니 사이즈 및 상품 중복 검사
+                                let isExist = cartData.find((v) => v.id === item.id && v.size === selectedSize);
 
                                 if(isExist) {
                                     setFooterMsg('⚠️ 이미 장바구니에 있는 상품입니다.');
@@ -201,7 +203,8 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                                         content: item.content,
                                         price: item.price,
                                         imgUrl: item.imgUrl,
-                                        count: 1
+                                        count: 1,
+                                        size: selectedSize
                                     }));
                                     setFooterMsg('✔️ 장바구니에 담았습니다.');
                                 }
