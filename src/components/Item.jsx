@@ -16,7 +16,11 @@ let Item = (props) => {             //메인 품목 카드
         <Col md={4} className="mb-4">
             <img onClick={() => navigate(`/detail/${e.id}`)} 
             src={e.imgUrl || `https://via.placeholder.com/150`}
-            width="80%" height="70%" style={{cursor: "pointer"}}/>
+            style={{
+                cursor: "pointer",
+                width: "300px",
+                height: "200px"
+                }}/>
             <h4 onClick={() => navigate(`/detail/${e.id}`)} style={{cursor: "pointer"}}>{e.title || e.content || "제목 없음"}</h4>
             <p>{new Intl.NumberFormat('ko-KR').format(e.price)}원</p>
         </Col>

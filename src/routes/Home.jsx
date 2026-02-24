@@ -4,10 +4,12 @@ import AddItem from "../components/AddItem";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SkeletonImg from "../components/SkeletonImg";
 
 const Home = (props) => {
     const [fade, setFade] = useFadeAnimation();                         //애니메이션을 주기위한 Custom Hook
     const [pictureValue, setPictureValue] = useState(0);                //슬라이드 vw값을 주기위한 카운팅
+    const [isLoading, setIsLoading] = useState(true);                   //로딩중 상태 관리
 
     const images = ["/img/bg-1.png", "/img/bg-2.png", "/img/bg-3.png"]; //슬라이드 이미지 갯수
     const imgCount = images.length;
@@ -18,6 +20,8 @@ const Home = (props) => {
     useEffect(() => {
         const getItems = async () => {
             try {
+                setIsLoading(true);
+
                 const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/item/all`);
                 
                 let data = res.data;
@@ -34,8 +38,11 @@ const Home = (props) => {
                 if (data) {
                     props.setShoes(data);   //데이터를 App에 있는 shoes에 저장
                 }
+
             }catch(err) {
                 console.error("상품목록 불러오기 실패", err);
+            }finally{
+                setIsLoading(false);
             }
         };
 
@@ -80,13 +87,21 @@ const Home = (props) => {
             <Container>
                 <Row>
                     {/*map을 이용하여 props로 받아온 data 갯수 만큼 카드생성을 반복*/}
-                    {Array.isArray(props.shoes) && props.shoes.length > 0 ? (
-                            props.shoes.map((e, i) => (
-                            <Item shoes={e} key={e.id || i} />
-                        ))
-                        ) :
+                    {
+                        isLoading ? 
                         (
-                            <p className="text-center mt-5">등록된 상품이 없다.</p>
+                            <SkeletonImg />
+                        ) 
+                        :   
+                        (
+                            Array.isArray(props.shoes) && props.shoes.length > 0 ? (
+                                    props.shoes.map((e, i) => (
+                                    <Item shoes={e} key={e.id || i} />
+                                ))
+                                ) :
+                                (
+                                    <p className="text-center mt-5">등록된 상품이 없다.</p>
+                                )
                         )
                     }
                 </Row>

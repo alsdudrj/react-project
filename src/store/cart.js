@@ -24,13 +24,9 @@ let cart = createSlice({
         },
         //상품을 삭제하는 함수
         deleteItem(state, action){
-            let target = state.find(item => item.id === action.payload && item.size === action.payload.size);
+            const {id, size} = action.payload;
 
-            state.forEach((item, i) => { //반복문을 통해 삭제버튼을 눌렀을때의 id값과 상품 id값을 비교
-                if(item.id === target.id){
-                    state.splice(i, 1); //해당하는 index에 있는 상품 1개 삭제
-                }
-            })
+            return state.filter(item => !(item.id === id && item.size === size));
         },
         //상품 전체를 삭제하는 함수
         deleteAllItem(state, action){

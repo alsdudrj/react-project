@@ -4,10 +4,8 @@ import 'react-loading-skeleton/dist/skeleton.css';
 const SkeletonImg = () => {
 return (
   <>
-  <div className="container mt-5">
-    <div className="row">
       {/*스켈레톤 이미지 3개씩 로딩*/}
-      {[1, 2, 3].map((v) => (
+      {[1, 2, 3, 4, 5, 6].map((v) => (
         <div className="col-md-4 p-4" key={v}>
           <Skeleton height={300} borderRadius={10}/>              {/* 이미지 */}
           <div className="text-center mt-3">
@@ -16,8 +14,6 @@ return (
           </div>
         </div>
       ))}
-    </div>
-  </div>
   </>
   );
 };

@@ -7,14 +7,17 @@ import LoginForm from "../components/LoginForm";
 import FilterForm from "../components/FilterForm";
 import { jwtDecode } from "jwt-decode";
 import { useToken } from "../hooks/Token";
-import { useState } from "react";
-import { useLogout } from "../hooks/Logout";
+import { useEffect, useState } from "react";
+import MyPageForm from "../components/MyPageForm";
 
 const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFilter, setShowFilter, setFooterFade, setFooterMsg}) => {
     let navigate = useNavigate();   //URL 이동시 html표시를 도와줌
     let username = useUsername();   //coustom hook을 불러옴
     const [token, userRole] = useToken();      //유저정보 확인을 위한 Custom Hook
+    const [showMyPage, setShowMyPage] = useState(false);    //내 정보 Form 상태관리
 
+    const decoded = token ? jwtDecode(token) : null;        //jwtToken decoded
+    const displayName = decoded?.nickname || "회원";        //decoded된 jwt로 유저 이름을 추출
     
     /* ================================= */
     /* =============JSX구간============= */ 
@@ -36,20 +39,34 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFil
                         {userRole === 'ROLE_ADMIN' &&
                             <Button variant="outline-light" onClick={() => {navigate("/add-product");}}>상품추가</Button>
                         }
-                        {!token ?
-                            <Button variant="outline-light" onClick={() => setShowLogin(!showLogin)}>로그인</Button>
+                        {!token ? 
+                            (
+                                <Button variant="outline-light" onClick={() => setShowLogin(!showLogin)}>로그인</Button>
+                            )
                         :
-                            <Button variant="outline-danger"
-                            onClick={() => {
-                                localStorage.removeItem("token");
-                                window.dispatchEvent(new Event('login-change'));
+                            (
+                                <div className="d-flex align-items-center gap-3">
+                                <Button variant="outline-danger"
+                                onClick={() => {
+                                    localStorage.removeItem("token");
+                                    window.dispatchEvent(new Event('login-change'));
 
-                                setFooterFade('');
-                                setTimeout(() => { setFooterFade('footEnd'); }, 10);
-                                setFooterMsg("🔴 로그아웃 성공");
-                                navigate('/');
-                            }}
-                            >로그아웃</Button>
+                                    setFooterFade('');
+                                    setTimeout(() => { setFooterFade('footEnd'); }, 10);
+                                    setFooterMsg("🔴 로그아웃 성공");
+                                    navigate('/');
+                                }}
+                                >로그아웃</Button>
+
+                                {/*내정보 폼*/}
+                                <span 
+                                    style={{ color: 'white', cursor: 'pointer', fontWeight: 'bold' }}
+                                    onClick={() => setShowMyPage(!showMyPage)}
+                                >
+                                    반갑다 {displayName}
+                                </span>
+                                </div>
+                            )
                         }
 
                         {/*로그인 폼*/}
@@ -61,6 +78,16 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFil
                             setFooterFade={setFooterFade} 
                             setFooterMsg={setFooterMsg}
                         />}
+
+                        {/* 내 정보 폼 호출 */}
+                        {showMyPage && (
+                            <MyPageForm
+                                setShowMyPage={setShowMyPage} 
+                                displayName={displayName}
+                                setFooterFade={setFooterFade}
+                                setFooterMsg={setFooterMsg}
+                            />
+                        )}
                     </div>
                 </Nav>
                 <Nav style={{ textAlign: "right" }}>
