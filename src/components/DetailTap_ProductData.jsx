@@ -3,7 +3,8 @@ const DetailTap_ProductData = ({item}) => {
         { id: 'detail', label: '상품상세', value: `${item.title} (${item.content})`},
         { id: 'producer', label: '생산자', value: item.producer || '정보 없음' },
         { id: 'origin', label: '원산지', value: item.origin || '정보 없음' },
-        { id: 'shipping', label: '배송/교환/반품', value: item.shipping || '상세문의' },
+        { id: 'shipping', label: '교환/반품', value: item.shipping || '상세문의' },
+        { id: 'content', label: '상품설명', value: item.content || '' }
     ];
 
   return (

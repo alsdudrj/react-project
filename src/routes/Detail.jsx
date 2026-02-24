@@ -11,7 +11,8 @@ import { useToken } from "../hooks/Token";
 
 const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     let {id} = useParams();                             //주소로 접속시 url 파라미터를 받아옴
-    let item = data.find((v) => v.id == id);            //서버에서 받은 data중 id요소를 이용하여 파라미터 번호에 맞는 array를 찾아옴
+    // let item = data.find((v) => v.id == id);            //서버에서 받은 data중 id요소를 이용하여 파라미터 번호에 맞는 array를 찾아옴
+    const item = shoes.find((v) => v.id == id);         //실제 서버 데이터를 받아와서 사용
 
     let [alert, setAlert] = useState(true);             //일정시간 후 없어질 html의 display boolean요소
     let [numAlert, setNumAlert] = useState(false);      //인풋창에 문자 넣으면 Alert 띄우기
@@ -75,6 +76,16 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     }, [item.id])
 
 
+    /* =========================================================== */
+    /* ==== 데이터가 아직 없거나 찾지 못했을 때 보여줄 내용 ==== */
+    if (shoes.length > 0 && !item) {
+        return <div className="text-center mt-5">존재하지 않는 상품입니다.</div>;
+    }
+    if (shoes.length === 0) {
+        return <div className="text-center mt-5">상품 정보를 불러오는 중입니다...</div>;
+    }
+
+
     /* ================================= */
     /* =============JSX구간============= */ 
     return(
@@ -83,7 +94,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                 {/*detail 페이지 카드 요소*/}
                 <div className="row">
                     <div className="col-md-6">
-                        <img src={`https://codingapple1.github.io/shop/shoes${item.id + 1}.jpg`} width="100%" height="500px"/>
+                        <img src={item.imgUrl} width="100%" height="500px"/>
                         <p style={{ fontSize: '8px', color: '#666' }}>신발사이즈는 랜덤으로 발송 됩니다</p>
                     </div>
                     <div className="col-md-6">

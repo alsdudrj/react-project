@@ -3,6 +3,7 @@ import Item from "../components/Item";
 import AddItem from "../components/AddItem";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Home = (props) => {
     const [fade, setFade] = useFadeAnimation();                         //애니메이션을 주기위한 Custom Hook
@@ -16,13 +17,24 @@ const Home = (props) => {
     /* ====상품데이터를 받아오는 함수==== */
     useEffect(() => {
         const getItems = async () => {
-            try{
+            try {
                 const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/item/all`);
+                
+                let data = res.data;
 
-                if(res.data){
-                    props.setShoes(res.data);   //받아온 데이터를 App에 shoes에 저장
-                };
-            }catch(err){
+                //서버에서 온 데이터가 문자열(string)이라면 JSON으로 변환
+                if (typeof data === 'string') {
+                    try {
+                        data = JSON.parse(data);
+                    } catch (e) {
+                        console.error("JSON 파싱 에러:", e);
+                    }
+                }
+
+                if (data) {
+                    props.setShoes(data);   //데이터를 App에 있는 shoes에 저장
+                }
+            }catch(err) {
                 console.error("상품목록 불러오기 실패", err);
             }
         };
@@ -68,10 +80,15 @@ const Home = (props) => {
             <Container>
                 <Row>
                     {/*map을 이용하여 props로 받아온 data 갯수 만큼 카드생성을 반복*/}
-                    {props.shoes && props.shoes.map((e, i) => (
-                        <Item shoes={e} key={e.id || i} />
-                    ))}
-                    {props.shoes.length === 0 && <p className="text-center mt-5">등록된 상품이 없다.</p>}
+                    {Array.isArray(props.shoes) ? (
+                            props.shoes.map((e, i) => (
+                            <Item shoes={e} key={e.id || i} />
+                        ))
+                        ) :
+                        (
+                            <p className="text-center mt-5">등록된 상품이 없다.</p>
+                        )
+                    }
                 </Row>
             </Container>
             {/*더보기 버튼*/}
