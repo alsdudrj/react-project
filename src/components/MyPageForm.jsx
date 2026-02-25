@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useLogout } from "../hooks/Logout";
 
 const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) => {
     const navigate = useNavigate();
     const [nowPassword, setNowPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const logout = useLogout(); //로그아웃 custom hook
 
     /* ====Alert 창 제어==== */
     const [alertMsg, setAlertMsg] = useState('');
@@ -49,7 +51,7 @@ const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) =
         }
 
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             const res = await axios.post(
                 `${import.meta.env.VITE_API_BASE_URL}/user/change-password`, 
                 { 
@@ -60,12 +62,7 @@ const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) =
             );
 
             if (res.status === 200) {
-                localStorage.removeItem("token");
-                window.dispatchEvent(new Event('login-change'));
-
-                setFooterFade('');
-                setTimeout(() => { setFooterFade('footEnd'); }, 10);
-                setFooterMsg("✔️ 비밀번호가 변경되었습니다. (새로 로그인 필요)");
+                logout("✔️ 비밀번호가 변경되었습니다. (새로 로그인 필요)");
                 setShowMyPage(false);
             }
         } catch (err) {

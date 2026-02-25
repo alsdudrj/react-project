@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-export function useLogin (setShowLogin, setFooterFade, setFooterMsg, onLoginSuccess) {
+export function useLogin (setShowLogin, setFooterFade, setFooterMsg, onLoginSuccess, rememberMe) {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -27,10 +27,16 @@ export function useLogin (setShowLogin, setFooterFade, setFooterMsg, onLoginSucc
                 throw new Error(errorText || "로그인 서버 에러");
             }
 
+            
+            const storage = rememberMe ? localStorage : sessionStorage; //rememberMe가 true면 localStorage, false면 sessionStorage 사용
             const token = await res.text();
 
+            //기존 토큰 제거
+            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
+
             // 토큰 저장
-            localStorage.setItem("token", token);
+            storage.setItem("token", token);
             window.dispatchEvent(new Event('login-change')); //화면 상태변화 감지
 
             if(onLoginSuccess) onLoginSuccess(jwtDecode(token));

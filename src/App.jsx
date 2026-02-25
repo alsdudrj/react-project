@@ -42,7 +42,7 @@ function App() {
         setTimeout(() => { 
             setFooterFade('footEnd'); 
             setFooterMsg(pendingMsg);
-        }, 100);
+        }, 10);
 
         // 확인했으니 삭제
         sessionStorage.removeItem("logoutMessage");

@@ -9,12 +9,14 @@ import { jwtDecode } from "jwt-decode";
 import { useToken } from "../hooks/Token";
 import { useEffect, useState } from "react";
 import MyPageForm from "../components/MyPageForm";
+import { useLogout } from "../hooks/Logout";
 
 const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFilter, setShowFilter, setFooterFade, setFooterMsg}) => {
     let navigate = useNavigate();   //URL 이동시 html표시를 도와줌
     let username = useUsername();   //coustom hook을 불러옴
     const [token, userRole] = useToken();      //유저정보 확인을 위한 Custom Hook
     const [showMyPage, setShowMyPage] = useState(false);    //내 정보 Form 상태관리
+    const logout = useLogout();                 //로그아웃 custom hook
 
     const decoded = token ? jwtDecode(token) : null;        //jwtToken decoded
     const displayName = decoded?.nickname || "회원";        //decoded된 jwt로 유저 이름을 추출
@@ -48,13 +50,8 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFil
                                 <div className="d-flex align-items-center gap-3">
                                 <Button variant="outline-danger"
                                 onClick={() => {
-                                    localStorage.removeItem("token");
-                                    window.dispatchEvent(new Event('login-change'));
+                                    logout("🔴 로그아웃 성공")
 
-                                    setFooterFade('');
-                                    setTimeout(() => { setFooterFade('footEnd'); }, 10);
-                                    setFooterMsg("🔴 로그아웃 성공");
-                                    navigate('/');
                                     setShowMyPage(false);
                                     setShowFilter(false);
                                     setShowLogin(false);

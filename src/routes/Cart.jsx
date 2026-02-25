@@ -7,10 +7,13 @@ import DaumPostcode from 'react-daum-postcode';
 import { useEffect, useState } from "react";
 import SalesModal from "../components/SalesModal";
 import axios from "axios";
+import { useToken } from "../hooks/Token";
 
 
 const Cart = ({setFooterFade, setFooterMsg}) => {
     let state = useSelector((state) => {return state});                      //store.js에서 가져온 상품 데이터
+
+    const [token, userRole] = useToken();
 
     const [fade, setFade] = useFadeAnimation();                              //애니메이션을 주기위한 Custom Hook
     const [handleAddress, address, isOpen, setIsOpen] = useKakaoAddress();   //카카오주소 목록 불러오기를 위한 Custom Hook
@@ -35,7 +38,6 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
     /* ==== 로그인한 유저의 기본 주소를 불러옴 ==== */
     useEffect(() => {
         const fetchUserAddress = async () => {
-            const token = localStorage.getItem("token");
             if (!token) return; //로그인 안 되어 있으면 중단
 
             try {

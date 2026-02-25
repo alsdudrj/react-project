@@ -29,10 +29,12 @@ function MyPage({ setFooterFade, setFooterMsg }) {
     //회원탈퇴시 footerMsg SessionStorage 저장
     const draw = useCallback((msg) => {
         localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
         if (msg) {
           sessionStorage.setItem("logoutMessage", msg); //로그아웃 메세지 sessionstorage 저장
         }
         localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
         window.dispatchEvent(new Event('login-change'));
         window.location.replace("/");
       }, []);
@@ -63,8 +65,9 @@ function MyPage({ setFooterFade, setFooterMsg }) {
     /* =============첫 유저데이터를 불러옴============= */ 
     useEffect(() => {
         const fetchUserData = async () => {
+            if (!token) return;
+
             try {
-                const token = localStorage.getItem("token");
                 const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user/me`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -124,7 +127,6 @@ function MyPage({ setFooterFade, setFooterMsg }) {
     /* =============유저 정보 수정============= */ 
     const handleUpdate = async () => {
         try {
-            const token = localStorage.getItem("token");
             await axios.put(`${import.meta.env.VITE_API_BASE_URL}/user/me`, memberInfo, {
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -143,7 +145,7 @@ function MyPage({ setFooterFade, setFooterMsg }) {
     /* =============회원탈퇴============= */ 
     const onWithdraw = async () => {
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/user/me`, {
                 headers: { Authorization: `Bearer ${token}` }
             });

@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";    
 
 export function useToken() {
-    const [token, setToken] = useState(localStorage.getItem("token"));
+    //토큰을 local과 session에서 모두 읽어옴
+    const getTokenFromStorage = () => {
+        return localStorage.getItem("token") || sessionStorage.getItem("token");
+    };
+
+    const [token, setToken] = useState(getTokenFromStorage);
     const [userRole, setUserRole] = useState(null);
 
     //토큰 확인
@@ -23,9 +28,9 @@ export function useToken() {
         //첫 마운트 실행
         updateInfo(token);
 
-        //다른 창이나 현재 창에서 localStorage가 변할 때 감지
+        //다른 창이나 현재 창에서 Storage가 변할 때 감지
         const handleStorageChange = () => {
-            const newToken = localStorage.getItem("token");
+            const newToken = getTokenFromStorage();
             setToken(newToken);
             updateInfo(newToken);
         };

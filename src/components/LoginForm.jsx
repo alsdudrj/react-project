@@ -9,10 +9,14 @@ import { useLogin } from "../hooks/Login";
 const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, setFooterMsg, onLoginSuccess}) => {
     const navigate = useNavigate();
 
+    const [rememberMe, setRememberMe] = useState(false);    //로그인 유지에 관한 체크박스 상태
     const [userInfo, loginWithKakao] = useKakao();
     const [googleUser, loginWithGoogle] = useGoogle();
 
-    const [handleLogin, userName, setUserName, password, setPassword] = useLogin(setShowLogin, setFooterFade, setFooterMsg, onLoginSuccess);
+    const [handleLogin, userName, setUserName, password, setPassword] = 
+        useLogin(
+            setShowLogin, setFooterFade, setFooterMsg, onLoginSuccess, rememberMe
+        );
 
     /* ================================= */
     /* =============JSX구간============= */ 
@@ -38,6 +42,8 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, 
                     type="checkbox" 
                     label="날 기억해줘" 
                     className="login-checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                     />
                     <Button variant="outline-light" type="submit"
                     onClick={handleLogin}

@@ -7,15 +7,19 @@ export function useLogout() {
 
   const logout = useCallback((msg) => {
     localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+
     if (msg) {
       sessionStorage.setItem("logoutMessage", msg); //로그아웃 메세지 sessionstorage 저장
     }
-    window.location.replace("/");
+
+    window.dispatchEvent(new Event('login-change'));  //상태 변경 알림
+    window.location.replace("/");                     //페이지 이동(뒤로가기 금지)
   }, []);
 
   useEffect(() => {
     const checkToken = () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token") || sessionStorage.getItem("token");
       if (!token) return;
 
       try {
