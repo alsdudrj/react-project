@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 export function useLogout() {
   const navigate = useNavigate();
@@ -18,21 +19,16 @@ export function useLogout() {
       if (!token) return;
 
       try {
-        // JWT 디코딩
-        const base64Url = token.split('.')[1];
-        if (!base64Url) return;
-        
-        // 유니코드 대응 디코딩
-        const payload = JSON.parse(decodeURIComponent(atob(base64Url).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join('')));
+        // 직접 구현한 복잡한 로직 대신 jwtDecode 사용
+        const payload = jwtDecode(token);
 
-        if (payload.exp < Date.now() / 1000) {
+        // 만료 시간 체크 (exp가 있는지 확인 후 비교)
+        if (payload.exp && payload.exp < Date.now() / 1000) {
           logout("⚠️ 세션이 만료되었습니다. 다시 로그인해주세요.");
         }
       } catch (e) {
         console.error("Token check error:", e);
-        // 토큰 형식이 잘못된 경우에도 로그아웃 처리
+        // 토큰 자체가 깨져있거나 형식이 안 맞을 때만 로그아웃
         logout("⚠️ 유효하지 않은 인증 정보입니다.");
       }
     };

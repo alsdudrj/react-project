@@ -17,6 +17,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [auth, setAuth] = useState('');
     const [userAddress, setUserAddress] = useState('');
     const [userDetailAddress, setUserDetailAddress] = useState('');
@@ -35,6 +36,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
         const space = /\s/
         const koreanCharacters = /[ㄱ-ㅎㅏ-ㅣ가-힣]/;
         const koreanOnly = /[ㄱ-ㅎㅏ-ㅣ]/;
+        const emailCharacters = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         setOk('');
 
@@ -80,6 +82,20 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             return ;
         }
 
+        if (!email) {
+            setAlertMsg('⚠️이메일을 입력하라고');
+            setOk('email');
+            return;
+        } else if (space.test(email)) {
+            setAlertMsg('⚠️이메일에 공백이 왜있냐');
+            setOk('email');
+            return;
+        } else if (!emailCharacters.test(email)) {
+            setAlertMsg('⚠️이게 이메일 이냐');
+            setOk('email');
+            return;
+        }
+
         if (!userAddress){
             setAlertMsg('⚠️노숙자 인것이냐');
             setOk('address');
@@ -92,7 +108,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
             return ;
         }
 
-        fetch(`${import.meta.env.VITE_API_BASE_URL}/register`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/user/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -101,6 +117,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                 userName: id,
                 password: password,
                 displayName: name,
+                email: email,
                 auth: auth,
                 address: userAddress,
                 detailAddress: userDetailAddress
@@ -157,7 +174,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
 
                     <Modal.Body className="px-5">
                         <Form.Group className="mb-3 id-anchor" controlId="formBasicId">
-                            <Form.Control type="id" placeholder="아이디 (영문 숫자만으로 2 ~ 8글자)" 
+                            <Form.Control type="text" placeholder="아이디 (영문 숫자만으로 2 ~ 12글자)" 
                             onChange={(e) => { setId(e.target.value); setOk(''); }}
                             />
                         {
@@ -181,7 +198,7 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                         </Form.Group>
 
                         <Form.Group className="mb-3 name-anchor" controlId="formBasicName">
-                            <Form.Control type="name" placeholder="이름" 
+                            <Form.Control type="text" placeholder="이름" 
                             onChange={(e) => {setName(e.target.value); setOk('');}}
                             />
                         {
@@ -192,7 +209,19 @@ const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
                         }
                         </Form.Group>
 
-                        <Form.Group className="mb-3 address-anchor" controlId="formBasicName">
+                        <Form.Group className="mb-3 email-anchor" controlId="formBasicEmail">
+                            <Form.Control type="text" placeholder="이메일" 
+                            onChange={(e) => {setEmail(e.target.value); setOk('');}}
+                            />
+                        {
+                            ok === 'email' &&
+                                <Alert className="regist-alert-overlay" variant={'danger'}>
+                                    {alertMsg}
+                                </Alert>
+                        }
+                        </Form.Group>
+
+                        <Form.Group className="mb-3 address-anchor" controlId="formBasicAddress">
                             <InputGroup size="sm" style={{ flex: '1 1 auto', display: 'flex'}}>
                                 <input 
                                     type="text"

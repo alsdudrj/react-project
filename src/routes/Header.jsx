@@ -55,6 +55,9 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFil
                                     setTimeout(() => { setFooterFade('footEnd'); }, 10);
                                     setFooterMsg("🔴 로그아웃 성공");
                                     navigate('/');
+                                    setShowMyPage(false);
+                                    setShowFilter(false);
+                                    setShowLogin(false);
                                 }}
                                 >로그아웃</Button>
 

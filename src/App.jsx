@@ -12,6 +12,7 @@ import { useFooterAlert } from './hooks/FooterAlert.jsx';
 import { FooterText } from './styled/Detail.styles.js';
 import AddProduct from './routes/AddProduct.jsx';
 import { useLogout } from './hooks/Logout.jsx';
+import MyPage from './routes/MyPage.jsx';
 // import Detail from './routes/Detail.jsx';
 // import Cart from './routes/Cart.jsx';
 const Detail = lazy(() => import('./routes/Detail.jsx')); //lazy방식 import
@@ -101,6 +102,7 @@ function App() {
             <Route path='/detail/:id' element={<Detail shoes={shoes} setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
             <Route path="/cart" element={<Cart setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
             <Route path="/add-product" element={<AddProduct setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+            <Route path="/mypage" element={<MyPage setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
 
             {/*잘못된 URL 접속시 보야주는 페이지*/}
             <Route path='*' element={<div>존재하지 않는 페이지이다</div>}/> 

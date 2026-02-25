@@ -94,7 +94,6 @@ const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) =
                 onClick={() => {
                     navigate('/mypage');
                     setShowMyPage(false);
-                    alert('아직안만듬');
                 }}
                 >내 정보 관리</Button>
             </div>
