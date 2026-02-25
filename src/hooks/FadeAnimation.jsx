@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export function useFadeAnimation() {
     const [fade, setFade] = useState('');             //애니메이션을 주기위한 className state
+    const location = useLocation();
 
     useEffect(() => {
         window.scrollTo(0, 0);                              //화면 제일위로 이동

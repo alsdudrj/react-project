@@ -41,15 +41,17 @@ const SalesModal = ({
                 onClick={(e) => e.stopPropagation()}
                 >
                     <Modal.Header className="d-flex justify-content-between align-items-center">
-                        <Modal.Title>주문 내역이다</Modal.Title>
+                        <Modal.Title style={{ fontSize: '18px', fontWeight: '800', flexShrink: 0 }}>
+                            🛒 주문 내역
+                        </Modal.Title>
        
-                        <div className="me-2 d-flex flex-column align-items-center">
-                            <p style={{ fontSize: '16px', fontWeight: '700', color: '#333'}}>배송지 주소</p>
-                            <div className="d-flex flex-column align-items-center">
-                                <span className="" style={{ fontSize: '14px', color: '#666' }}>
-                                    {address ? address : "배송주소가 입력되지 않았다."}
+                        <div className="text-center" style={{ flex: '2' }}>
+                            <p className="mb-0" style={{ fontSize: '12px', fontWeight: '700', color: '#888' }}>배송지 정보</p>
+                            <div style={{ lineHeight: '1.2' }}>
+                                <span style={{ fontSize: '13px', color: '#333', display: 'block' }}>
+                                    {address ? address : "배송지가 입력되지 않았다."}
                                 </span>
-                                <span className="" style={{ fontSize: '14px', color: '#666' }}>
+                                <span style={{ fontSize: '13px', color: '#666' }}>
                                     {address ? detailAddress : ""}
                                 </span>
                             </div>

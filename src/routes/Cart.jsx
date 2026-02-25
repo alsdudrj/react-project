@@ -6,18 +6,18 @@ import { useKakaoAddress } from "../hooks/KakaoAddress";
 import DaumPostcode from 'react-daum-postcode';
 import { useEffect, useState } from "react";
 import SalesModal from "../components/SalesModal";
-import { FooterText } from "../styled/Detail.styles";
-import { useFooterAlert } from "../hooks/FooterAlert";
+import axios from "axios";
+
 
 const Cart = ({setFooterFade, setFooterMsg}) => {
     let state = useSelector((state) => {return state});                      //store.js에서 가져온 상품 데이터
 
     const [fade, setFade] = useFadeAnimation();                              //애니메이션을 주기위한 Custom Hook
     const [handleAddress, address, isOpen, setIsOpen] = useKakaoAddress();   //카카오주소 목록 불러오기를 위한 Custom Hook
+    const [userAddress, setUserAddress] = useState("");
     const [detailAddress, setDetailAddress] = useState("");
 
     const [showSales, setShowSales] = useState(false);                       //구매창 상태관리   
-
     const [checkItems, setCheckItems] = useState(state.cart.map(item => `${item.id}-${item.size}`)); //체크된 품목 ID요소 저장
 
     const totalPrice = 
@@ -29,6 +29,33 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
 
 
     const dispatch = useDispatch();                                            //state변경함수 사용을 위해 불러옴
+
+
+    /* ======================================== */
+    /* ==== 로그인한 유저의 기본 주소를 불러옴 ==== */
+    useEffect(() => {
+        const fetchUserAddress = async () => {
+            const token = localStorage.getItem("token");
+            if (!token) return; //로그인 안 되어 있으면 중단
+
+            try {
+                const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user/me`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (res.data) {
+                    if(res.data.address) {
+                        setUserAddress(res.data.address); 
+                    }
+                    if(res.data.detailAddress) {
+                        setDetailAddress(res.data.detailAddress);
+                    }
+                }
+            } catch (err) {
+                console.error("유저 주소 정보 로드 실패", err);
+            }
+        };
+        fetchUserAddress();
+    }, []); // 마운트 시 1회 실행
 
 
     /* ====================== */
@@ -68,17 +95,17 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                         <div className="address-box p-2 border rounded bg-light">
                             <p className="mb-1" style={{ fontSize: '13px', color: '#666' }}>배송지 위치</p>
                             <div className="d-flex align-items-center flex-nowrap gap-1 mb-2">
-                                <Button variant="outline-secondary" size="sm" style={{ whiteSpace: 'nowrap', fontSize: '12px', flexShrink: 0 }}
+                                {/* <Button variant="outline-secondary" size="sm" style={{ whiteSpace: 'nowrap', fontSize: '12px', flexShrink: 0 }}
                                 onClick={() => {
                                 alert('아직 안만듬')
                                 }}
                                 >    
-                                주소불러오기</Button>
+                                주소불러오기</Button> */}
                                 <InputGroup size="sm" style={{ flex: '1 1 auto', display: 'flex'}}>
                                 <input 
                                     type="text"
                                     className="form-control form-control-sm bg-white"
-                                    value={address}
+                                    value={userAddress}
                                     placeholder="주소선택"
                                     readOnly
                                 /><Button variant="outline-secondary"
@@ -89,6 +116,7 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                                 <input
                                     type="text"
                                     className="form-control form-control-sm" 
+                                    value={detailAddress}
                                     placeholder="상세주소"
                                     onChange={(e) => setDetailAddress(e.target.value)}
                                 />
@@ -248,7 +276,7 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                 setFooterFade={setFooterFade}
                 setCheckItems={setCheckItems}
                 setFooterMsg={setFooterMsg}
-                address={address}
+                address={userAddress}
                 detailAddress={detailAddress}
                 />
                 :

@@ -126,10 +126,6 @@ function AddProduct({setFooterFade, setFooterMsg}) {
             setAlertMsg('⚠️상품 이름이 뭐냐');
             setOk('title');
             return ;
-        }else if(space.test(inputs.title)){
-            setAlertMsg('⚠️빈칸 쓰지 말라고');
-            setOk('title');
-            return ;
         }else if (koreanOnly.test(inputs.title) || specialCharacters.test(inputs.title)){
             setAlertMsg('⚠️이게 상품 이름이냐');
             setOk('title');
@@ -140,9 +136,9 @@ function AddProduct({setFooterFade, setFooterMsg}) {
             setAlertMsg('⚠️얼만데');
             setOk('price');
             return ;
-        }else if(space.test(inputs.title)){
+        }else if(space.test(inputs.price)){
             setAlertMsg('⚠️빈칸 쓰지 말라고');
-            setOk('title');
+            setOk('price');
             return ;
         }
 
@@ -154,10 +150,6 @@ function AddProduct({setFooterFade, setFooterMsg}) {
             setAlertMsg('⚠️이게 생산지 이름이냐');
             setOk('origin');
             return ;
-        }else if(space.test(inputs.title)){
-            setAlertMsg('⚠️빈칸 쓰지 말라고');
-            setOk('title');
-            return ;
         }
 
         if (!inputs.producer){
@@ -168,19 +160,11 @@ function AddProduct({setFooterFade, setFooterMsg}) {
             setAlertMsg('⚠️이게 이름이냐');
             setOk('producer');
             return ;
-        }else if(space.test(inputs.title)){
-            setAlertMsg('⚠️빈칸 쓰지 말라고');
-            setOk('title');
-            return ;
         }
 
         if (!inputs.content){
             setAlertMsg('⚠️이게 뭔지 설명은 해야지');
             setOk('content');
-            return ;
-        }else if(space.test(inputs.title)){
-            setAlertMsg('⚠️빈칸 쓰지 말라고');
-            setOk('title');
             return ;
         }
 
@@ -212,9 +196,11 @@ function AddProduct({setFooterFade, setFooterMsg}) {
         try {
             let finalImgUrl = "";
 
-            //Supabase 업로드 로직
+            //Supabase 이미지 업로드
             if (imageFile) {
-                const fileName = `${Date.now()}_${imageFile.name}`;
+                const ext = imageFile.name.split('.').pop(); //확장자 추출
+                const fileName = `${Date.now()}.${ext}`;     //파일명 변경
+
                 const { data, error } = await supabase.storage
                     .from('item') 
                     .upload(fileName, imageFile);
@@ -224,7 +210,7 @@ function AddProduct({setFooterFade, setFooterMsg}) {
                 const { data: urlData } = supabase.storage
                     .from('item')
                     .getPublicUrl(fileName);
-                
+
                 finalImgUrl = urlData.publicUrl;
             }
 

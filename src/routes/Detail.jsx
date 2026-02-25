@@ -15,11 +15,8 @@ import DetailSkeletonImg from "../components/DetailSkeletonImg";
 const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     let {id} = useParams();                             //주소로 접속시 url 파라미터를 받아옴
     const navigate = useNavigate();
-    // let item = data.find((v) => v.id == id);            //서버에서 받은 data중 id요소를 이용하여 파라미터 번호에 맞는 array를 찾아옴
-    // let [numAlert, setNumAlert] = useState(false);      //인풋창에 문자 넣으면 Alert 띄우기
 
     let [alertDiv, setAlertDiv] = useState(true);       //일정시간 후 없어질 html의 display boolean요소
-    let [inputValue, setInputValue] = useState("");     //인풋창에 들어간 값 저장
     let [selectedSize, setSelectedSize] = useState("");     //사이즈를 저장할 state
     const [showAlertModal, setShowAlertModal] = useState(false);
 
@@ -33,7 +30,8 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     const [item, setItem] = useState(null);             //상품정보 상태 관리
     const [loading, setLoading] = useState(true);       //로딩중 상태 관리
 
-    //상품정보를 불러오는 함수
+
+    //상품정보를 불러오는 useEffect
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_API_BASE_URL}/item/${id}`)
             .then(res => {
@@ -45,6 +43,16 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                 setLoading(false);
             });
     }, [id]);
+
+
+    //스켈레톤 이미지 이후 애니메이션 재 작동
+    useEffect(() => {
+        if (item) {
+            setFade('');
+            let timer = setTimeout(() => { setFade('end') }, 10);
+            return () => clearTimeout(timer);
+        }
+    }, [item, setFade]);
 
 
     /* ================================ */
@@ -62,18 +70,6 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                 });
             }, 2000);
         }, []);
-
-
-    /* ========================================== */
-    /* ====인풋박스에 숫자말고 다른거 띄우면 욕하기==== */
-    // useEffect(() => {
-    //     // if (inputValue === "") return;       //text 출력 후 input Value가 없어도 text 유지
-
-    //     if (Number.isNaN(Number(inputValue))){  //inputValue를 숫자로 변환하고 숫자가 아니면 NaN 반환 
-    //                                             //(Number.isNaN은 형변환을 하지않고 undefined도 false를 반환해서 정확한 체크 가능)
-    //         setNumAlert(true);
-    //     }else setNumAlert(false);
-    // }, [inputValue]);
 
 
     /* ================================================================== */
@@ -146,14 +142,8 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                         <img src={item.imgUrl} width="100%" height="500px"/>
                     </div>
                     <div className="col-md-6">
-                        {/* <div className="d-flex align-items-center justify-content-center" style={{ gap: '10px', height: '40px' }}>
-                            <input type="text" id="numInput" placeholder="실험용(숫자만써라)" value={inputValue} onChange={(e) => { setInputValue(e.target.value) }}/>
-                            <div style={{ width: '250px', textAlign: 'left' }}>
-                                { numAlert == true ? <p style={{color: "red", margin: 0, fontSize: '12px'}}>글자를 못읽는것이냐? 문자말고 숫자써라</p> : '' }
-                            </div>
-                        </div> */}
                         <h4 className="pt-5">{item.title}</h4>
-                        <p>제조사: {item.content}</p>
+                        <p>제조: {item.origin}</p>
                         <p>{new Intl.NumberFormat('ko-KR').format(item.price)}원</p>
 
                         {/*사이즈 선택*/}
@@ -195,7 +185,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                                     dispatch(addItem({
                                         id: item.id,
                                         name: item.title,
-                                        content: item.content,
+                                        origin: item.origin,
                                         price: item.price,
                                         imgUrl: item.imgUrl,
                                         count: 1,
