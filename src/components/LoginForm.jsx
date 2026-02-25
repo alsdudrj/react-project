@@ -2,21 +2,24 @@ import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useKakao } from "../hooks/Kakao";
 import { useGoogle } from "../hooks/Google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLogin } from "../hooks/Login";
+import axios from "axios";
 
 
 const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, setFooterMsg, onLoginSuccess}) => {
     const navigate = useNavigate();
 
     const [rememberMe, setRememberMe] = useState(false);    //로그인 유지에 관한 체크박스 상태
-    const [userInfo, loginWithKakao] = useKakao();
-    const [googleUser, loginWithGoogle] = useGoogle();
 
-    const [handleLogin, userName, setUserName, password, setPassword] = 
+    //로그인 Custom hook
+    const [handleLogin, userName, setUserName, password, setPassword, handleSocialLogin] = 
         useLogin(
             setShowLogin, setFooterFade, setFooterMsg, onLoginSuccess, rememberMe
         );
+    const [loginWithGoogle] = useGoogle(handleSocialLogin); //Google 로그인 Custom hook
+    const [loginWithKakao] = useKakao(handleSocialLogin);   //Kakao 로그인 Custom hook
+
 
     /* ================================= */
     /* =============JSX구간============= */ 

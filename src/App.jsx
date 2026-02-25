@@ -13,6 +13,7 @@ import { FooterText } from './styled/Detail.styles.js';
 import AddProduct from './routes/AddProduct.jsx';
 import { useLogout } from './hooks/Logout.jsx';
 import MyPage from './routes/MyPage.jsx';
+import { useKakaoHandler } from './hooks/KakaoHandler.jsx';
 // import Detail from './routes/Detail.jsx';
 // import Cart from './routes/Cart.jsx';
 const Detail = lazy(() => import('./routes/Detail.jsx')); //lazy방식 import
@@ -31,6 +32,8 @@ function App() {
   const [footerFade, setFooterFade, footerMsg, setFooterMsg] = useFooterAlert();  //footer 애니메이션 Custom Hook
 
   const logout = useLogout(); //세션만료시 로그아웃을 위한 custom hook
+  useKakaoHandler(setFooterFade, setFooterMsg); //카카오 Redirect 후 로그인을 위한 Custom Hook
+
 
   /* ======================================== */
   /* ====SessionStorage에 저장한 메세지 출력====*/
