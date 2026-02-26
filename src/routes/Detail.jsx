@@ -204,10 +204,15 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                         {/*관리자용 삭제버튼*/}
                         {userRole === 'ROLE_ADMIN' && (
                             <div className="mt-3 mb-3" style={{ border: '1px dotted red', padding: '10px' }}>
-                                <p style={{color : 'red', fontSize : '13px'}}>관리자 모드</p>
-                                <Button variant="danger" onClick={() => setShowAlertModal(true)}>
-                                    상품 삭제하기
-                                </Button>
+                                <p style={{color : 'red', fontSize : '13px'}}>관리자 메뉴</p>
+                                <div className="d-flex justify-content-center gap-2">
+                                    <Button variant="danger" onClick={() => setShowAlertModal(true)}>
+                                        상품 삭제하기
+                                    </Button>
+                                    <Button variant="primary" onClick={() => navigate(`/add-product/${item.id}`)}>
+                                        상품 수정하기
+                                    </Button>
+                                </div>
                             </div>
                         )}
                     </div>

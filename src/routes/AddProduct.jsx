@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button, Container, Alert, Row, Col } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { useFadeAnimation } from "../hooks/FadeAnimation";
 import AlertModal from "../components/AlertModal";
+import axios from "axios";
 
 function AddProduct({setFooterFade, setFooterMsg}) {
     const navigate = useNavigate();
+    const {id} = useParams(); //URL 파라미터에서 id 추출
+    const isEditMode = !!id;    //URL에 id가 있으면 수정, 없으면 등록
+
     const [fade, setFade] = useFadeAnimation();                     //페이지 애니메이션 custom hook
     const [showAlertModal, setShowAlertModal] = useState(false);    //alert 모달 제어
 
@@ -16,6 +20,7 @@ function AddProduct({setFooterFade, setFooterMsg}) {
     const [sizeStocks, setSizeStocks] = useState([{size: "", stock: ""}]); //사이즈/재고 입력 상태관리
 
     const sizeArr = [230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290]
+
 
     /* ============================== */
     /* ====상품정보를 받는 useState==== */    
@@ -28,6 +33,34 @@ function AddProduct({setFooterFade, setFooterMsg}) {
         origin: "",
         shipping: "가능"
     });
+
+
+    /* ==================================== */
+    /* ==== 수정할 때 기존 데이터 불러오기 ==== */
+    useEffect(() => {
+        if (isEditMode) {
+            axios.get(`${import.meta.env.VITE_API_BASE_URL}/item/${id}`)
+                .then(res => {
+                    const data = res.data;
+                    setInputs({
+                        title: data.title,
+                        price: data.price,
+                        content: data.content,
+                        category: data.category || "shoes",
+                        producer: data.producer,
+                        origin: data.origin,
+                        shipping: data.shipping || "가능"
+                    });
+                    setSizeStocks(data.sizeStocks);
+                    setImgPreview(data.imgUrl); //기존 이미지 미리보기 설정
+                })
+                .catch(err => {
+                    console.error("데이터 로딩 실패", err);
+                    alert("상품 정보를 불러올 수 없습니다.");
+                    navigate("/");
+                });
+        }
+    }, [id, isEditMode, navigate]);
 
 
     /* ============================== */
@@ -116,7 +149,7 @@ function AddProduct({setFooterFade, setFooterMsg}) {
 
         setOk('');
 
-        if (!imageFile){
+        if (!isEditMode && !imageFile){ //수정일때는 유효성 검사 안함
             setAlertMsg('⚠️상품이 어떻게 생겼는지는 알아야지.');
             setOk('img');
             return ;
@@ -193,23 +226,34 @@ function AddProduct({setFooterFade, setFooterMsg}) {
     const onSubmit = async (e) => {
         if (e) e.preventDefault();
 
+        const localToken = localStorage.getItem("token");
+        const sessionToken = sessionStorage.getItem("token");
+
+        //둘 중 하나 사용
+        const token = localToken || sessionToken;
+
+        //토큰 유효성 검사
+        if (!token || token === "null" || token === "undefined") {
+            setFooterFade('');
+            setTimeout(() => { setFooterFade('footEnd'); }, 10);
+            setFooterMsg("⚠️ 로그인 정보가 없다. 다시 로그인 해라");
+            navigate("/");
+            return;
+        }
+
         try {
-            let finalImgUrl = "";
+            let finalImgUrl = imgPreview;
 
             //Supabase 이미지 업로드
             if (imageFile) {
-                const ext = imageFile.name.split('.').pop(); //확장자 추출
-                const fileName = `${Date.now()}.${ext}`;     //파일명 변경
+                const ext = imageFile.name.split('.').pop();    //확장자 추출
+                const fileName = `${Date.now()}.${ext}`;        //파일명 변경
 
-                const { data, error } = await supabase.storage
-                    .from('item') 
-                    .upload(fileName, imageFile);
+                const { data, error } = await supabase.storage.from('item').upload(fileName, imageFile);
 
                 if (error) throw error;
 
-                const { data: urlData } = supabase.storage
-                    .from('item')
-                    .getPublicUrl(fileName);
+                const { data: urlData } = supabase.storage.from('item').getPublicUrl(fileName);
 
                 finalImgUrl = urlData.publicUrl;
             }
@@ -221,32 +265,44 @@ function AddProduct({setFooterFade, setFooterMsg}) {
                 sizeStocks: sizeStocks
             };
 
-            const token = localStorage.getItem("token");
+            //수정일 경우 PUT, 등록일경우 POST로 변경
+            const url = isEditMode 
+            ? `${import.meta.env.VITE_API_BASE_URL}/item/edit/${id}`
+            : `${import.meta.env.VITE_API_BASE_URL}/item/add`;
 
-            //서버 전송
-            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/item/add`, {
-                method: "POST",
+            const res = await axios({
+                method: isEditMode ? "PUT" : "POST",
+                url: url,
+                data: itemData,
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` 
-                },
-                body: JSON.stringify(itemData), //데이터를 JSON 문자열로 변환
+                    "Authorization": `Bearer ${token}`
+                }
             });
             
-            if(res.ok) {
+            if(res.status === 200 || res.status === 201) {
                 setFooterFade('');
                 setTimeout(() => { setFooterFade('footEnd'); }, 10);
-                setFooterMsg("✔️ 상품등록 성공");
-                navigate("/");
-            } else {
+                setFooterMsg(isEditMode ? "✔️ 상품수정 성공" : "✔️ 상품등록 성공");
+                navigate(isEditMode ? `/detail/${id}` : "/");
+            }else {
                 const errorText = await res.text();
                 throw new Error(errorText || "서버 응답 에러");
             }
         } catch (err) {
-            console.error("등록 중 발생한 에러:", err);
+            console.error("처리 중 발생한 에러:", err);
+    
+            let errorMsg = "서버 연결 실패";
+            
+            if (err.response) {
+                errorMsg = err.response.data?.message || err.response.data || err.message;
+                if (err.response.status === 403) errorMsg = "권한이 없습니다 (관리자 로그인 필요)";
+            } else {
+                errorMsg = err.message;
+            }
+
             setFooterFade('');
             setTimeout(() => { setFooterFade('footEnd'); }, 10);
-            setFooterMsg("⚠️ 등록 실패: " + err.message);
+            setFooterMsg("⚠️ 처리 실패: " + errorMsg);
         }
     };
 
@@ -259,7 +315,7 @@ function AddProduct({setFooterFade, setFooterMsg}) {
             <Form>
                 <Row>
                     <Col md={7}>
-                        <h3 className="mb-4">상품 등록하기</h3>
+                        <h3 className="mb-4">{isEditMode ? "상품 수정하기" : "상품 등록하기"}</h3>
                         {/*이미지 미리보기*/}
                         <div className="mb-3 text-center">
                             {imgPreview ? 
@@ -363,7 +419,9 @@ function AddProduct({setFooterFade, setFooterMsg}) {
                             }
                         </Form.Group>
 
-                        <Button variant="primary" type="button" className="w-100" onClick={handleBeforeSubmit}>등록하기</Button>
+                        <Button variant="primary" type="button" className="w-100" onClick={handleBeforeSubmit}>
+                            {isEditMode ? "수정하기" : "등록하기"}
+                        </Button>
                     </Col>
 
                     {/*사이즈 설정*/}
@@ -432,8 +490,8 @@ function AddProduct({setFooterFade, setFooterMsg}) {
         {/*Alert모달*/}
         {showAlertModal && 
         <AlertModal setShowAlertModal={setShowAlertModal} onAction={onSubmit} 
-        Msg='정말로 등록하시겠습니까?'
-        okMsg='등록한다'
+        Msg={isEditMode ? '정말로 수정하시겠습니까?' : '정말로 등록하시겠습니까?'}
+        okMsg={isEditMode ? '수정한다' : '등록한다'}
         />}
         </>
     );

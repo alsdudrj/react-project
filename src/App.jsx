@@ -127,7 +127,12 @@ function App() {
             />}/>
             <Route path='/detail/:id' element={<Detail shoes={shoes} setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
             <Route path="/cart" element={<Cart setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+
+            {/*상품 수정 및 등록*/}
             <Route path="/add-product" element={<AddProduct setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+            <Route path="/add-product/:id" element={<AddProduct setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+
+            {/*내 정보*/}
             <Route path="/mypage" element={<MyPage setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
 
             {/*카카오 결제 확인 페이지*/}
