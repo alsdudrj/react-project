@@ -15,6 +15,8 @@ import { useLogout } from './hooks/Logout.jsx';
 import MyPage from './routes/MyPage.jsx';
 import { useKakaoHandler } from './hooks/KakaoHandler.jsx';
 import PaymentSuccess from './components/PaymentSuccess.jsx';
+import ProtectedRoute from './Protected/ProtectedRoute.jsx';
+import AdminRoute from './Protected/AdminRoute.jsx';
 // import Detail from './routes/Detail.jsx';
 // import Cart from './routes/Cart.jsx';
 const Detail = lazy(() => import('./routes/Detail.jsx')); //lazy방식 import
@@ -119,6 +121,7 @@ function App() {
       <Container fluid className='p-0'>
         <div className="App">
           <Routes>
+            {/*아무나 볼 수 있는 페이지*/}
             <Route path="/" 
             element={<Home 
               shoes={shoes} setShoes={setShoes} 
@@ -126,17 +129,21 @@ function App() {
               showLogin={showLogin}
             />}/>
             <Route path='/detail/:id' element={<Detail shoes={shoes} setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
-            <Route path="/cart" element={<Cart setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
 
-            {/*상품 수정 및 등록*/}
-            <Route path="/add-product" element={<AddProduct setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
-            <Route path="/add-product/:id" element={<AddProduct setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+            {/*로그인 해야 볼 수 있는 페이지*/}
+            <Route element={<ProtectedRoute/>}>
+              <Route path="/cart" element={<Cart setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+              <Route path="/mypage" element={<MyPage setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
 
-            {/*내 정보*/}
-            <Route path="/mypage" element={<MyPage setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+              {/*카카오 결제 확인 페이지*/}
+              <Route path="/payment/success" element={<PaymentSuccess/>} />
 
-            {/*카카오 결제 확인 페이지*/}
-            <Route path="/payment/success" element={<PaymentSuccess />} />
+              {/*관리자 용 페이지*/}
+              <Route element={<AdminRoute/>}>
+                <Route path="/add-product" element={<AddProduct setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+                <Route path="/add-product/:id" element={<AddProduct setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+              </Route>
+            </Route>
 
             {/*잘못된 URL 접속시 보야주는 페이지*/}
             <Route path='*' element={<div>존재하지 않는 페이지이다</div>}/> 
