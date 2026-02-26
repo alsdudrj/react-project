@@ -14,6 +14,7 @@ import AddProduct from './routes/AddProduct.jsx';
 import { useLogout } from './hooks/Logout.jsx';
 import MyPage from './routes/MyPage.jsx';
 import { useKakaoHandler } from './hooks/KakaoHandler.jsx';
+import PaymentSuccess from './components/PaymentSuccess.jsx';
 // import Detail from './routes/Detail.jsx';
 // import Cart from './routes/Cart.jsx';
 const Detail = lazy(() => import('./routes/Detail.jsx')); //lazy방식 import
@@ -38,19 +39,31 @@ function App() {
   /* ======================================== */
   /* ====SessionStorage에 저장한 메세지 출력====*/
   useEffect(() => {
-    const pendingMsg = sessionStorage.getItem("logoutMessage");
-    if (pendingMsg) {
-        // 푸터 메시지 띄우기 로직
-        setFooterFade('');
-        setTimeout(() => { 
-            setFooterFade('footEnd'); 
-            setFooterMsg(pendingMsg);
-        }, 10);
+    const logoutMsg = sessionStorage.getItem("logoutMessage");
+    const paymentMsg = sessionStorage.getItem("paymentSuccessMsg");
 
-        // 확인했으니 삭제
-        sessionStorage.removeItem("logoutMessage");
-    }
-}, [setFooterFade, setFooterMsg]);
+    const pendingMsg = logoutMsg || paymentMsg;
+      if (pendingMsg) {
+          setFooterMsg(pendingMsg);
+
+          // 푸터 메시지 띄우기 로직
+          const showTimer = setTimeout(() => {
+              setFooterFade('footEnd');
+          }, 100);
+
+          const hideTimer = setTimeout(() => {
+              setFooterFade('');
+              //확인했으니 삭제
+              if (logoutMsg) sessionStorage.removeItem("logoutMessage");
+              if (paymentMsg) sessionStorage.removeItem("paymentSuccessMsg");
+          }, 3000);
+
+          return () => {
+              clearTimeout(showTimer);
+              clearTimeout(hideTimer);
+          };
+      }
+  }, [setFooterFade, setFooterMsg]);
 
 
   /* ======================================================== */
@@ -65,7 +78,7 @@ function App() {
     const res = await fetch(url, options);
 
     if (res.status === 401) {
-        // 401 Unauthorized = 토큰 만료 혹은 유효하지 않음
+        //401 Unauthorized = 토큰 만료 혹은 유효하지 않음
         alert("세션이 만료되었습니다. 다시 로그인해주세요.");
         localStorage.removeItem("token"); // 토큰 삭제
         window.location.href = "/login";   // 로그인 페이지로 강제 이동
@@ -106,6 +119,9 @@ function App() {
             <Route path="/cart" element={<Cart setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
             <Route path="/add-product" element={<AddProduct setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
             <Route path="/mypage" element={<MyPage setFooterFade={setFooterFade} setFooterMsg={setFooterMsg}/>}/>
+
+            {/*카카오 결제 확인 페이지*/}
+            <Route path="/payment/success" element={<PaymentSuccess />} />
 
             {/*잘못된 URL 접속시 보야주는 페이지*/}
             <Route path='*' element={<div>존재하지 않는 페이지이다</div>}/> 

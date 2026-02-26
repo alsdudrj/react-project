@@ -272,7 +272,8 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
             {
                 showSales ?
                 <SalesModal 
-                state={state} 
+                state={state}
+                token={token}
                 setShowSales={setShowSales}
                 totalPrice={totalPrice}
                 setFooterFade={setFooterFade}
