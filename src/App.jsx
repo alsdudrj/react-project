@@ -33,7 +33,7 @@ function App() {
   const [footerFade, setFooterFade, footerMsg, setFooterMsg] = useFooterAlert();  //footer 애니메이션 Custom Hook
 
   const logout = useLogout(); //세션만료시 로그아웃을 위한 custom hook
-  useKakaoHandler(setFooterFade, setFooterMsg); //카카오 Redirect 후 로그인을 위한 Custom Hook
+  const { isLoading: isKakaoLoading } = useKakaoHandler(setFooterFade, setFooterMsg); //카카오 Redirect 후 로그인을 위한 Custom Hook
 
 
   /* ======================================== */
@@ -93,6 +93,16 @@ function App() {
   /* =============Route구간============= */ 
   return (
     <>
+      {/* 카카오 리다이렉트 통신 중일 때 전체화면 로딩 */}
+      {isKakaoLoading && (
+          <div className="loading-overlay">
+              <div className="text-center">
+                  <div className="spinner-border text-warning" role="status"></div>
+                  <h4 className="mt-3">카카오 로그인 처리 중...</h4>
+              </div>
+          </div>
+      )}
+
       <Header 
         setShowLogin={setShowLogin} showLogin={showLogin}
         showRegister={showRegister} setShowRegister={setShowRegister}

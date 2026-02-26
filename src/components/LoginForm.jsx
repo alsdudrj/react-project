@@ -13,12 +13,28 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, 
     const [rememberMe, setRememberMe] = useState(false);    //로그인 유지에 관한 체크박스 상태
 
     //로그인 Custom hook
-    const [handleLogin, userName, setUserName, password, setPassword, handleSocialLogin] = 
+    const [handleLogin, userName, setUserName, password, setPassword, handleSocialLogin, isLoading] = 
         useLogin(
             setShowLogin, setFooterFade, setFooterMsg, onLoginSuccess, rememberMe
         );
     const [loginWithGoogle] = useGoogle(handleSocialLogin); //Google 로그인 Custom hook
     const [loginWithKakao] = useKakao(handleSocialLogin);   //Kakao 로그인 Custom hook
+
+
+    /* ========================= */
+    /* ====로딩중 보여줄 화면===== */ 
+    if (isLoading) {
+        return (
+            <div className="loading-overlay">
+                <div className="text-center">
+                    {/* 부트스트랩 Spinner 혹은 이미지 */}
+                    <div className="spinner-border text-primary" role="status"></div>
+                    <h4 className="mt-3">로그인 처리 중입니다...</h4>
+                    <p>잠시만 기다려주세요.</p>
+                </div>
+            </div>
+        );
+    }
 
 
     /* ================================= */

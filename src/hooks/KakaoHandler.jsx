@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
 export function useKakaoHandler(setFooterFade, setFooterMsg) {
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const code = params.get("code");
@@ -13,6 +15,8 @@ export function useKakaoHandler(setFooterFade, setFooterMsg) {
     }, []);
 
     const handleKakaoLogin = async (code) => {
+        setIsLoading(true);
+
         try {
             const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/user/social-login/kakao`, {
                 code: code,
@@ -39,6 +43,10 @@ export function useKakaoHandler(setFooterFade, setFooterMsg) {
         } catch (err) {
             console.error("카카오 로그인 실패:", err);
             setFooterMsg("❌ 카카오 로그인 처리 중 오류 발생");
+        }finally {
+            setIsLoading(false);
         }
     };
+
+    return { isLoading };
 }

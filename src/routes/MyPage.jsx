@@ -17,13 +17,15 @@ function MyPage({ setFooterFade, setFooterMsg }) {
     const [token, userRole] = useToken();                               //유저정보 확인을 위한 Custom Hook
     const [handleAddress, address, isOpen, setIsOpen] = useKakaoAddress();   //카카오주소 목록 불러오기를 위한 Custom Hook
 
+    const [serverInfo, setServerInfo] = useState({email: ''});          //원본 email 저장
+
     const [alertMsg, setAlertMsg] = useState('');
     const [ok, setOk] = useState('');
 
     const decoded = token ? jwtDecode(token) : null;             //jwtToken decoded
     const currentAuth = decoded?.auth;
     const currentUserName = decoded?.sub || "아이디 확인 안됨";    //jwt에서
-    const currentEmail = decoded?.email || "등록된 이메일 없음";   //jwt에서 이메일 정보 추출
+  
 
 
     //회원탈퇴시 footerMsg SessionStorage 저장
@@ -72,13 +74,15 @@ function MyPage({ setFooterFade, setFooterMsg }) {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (res.data) {
-                    setMemberInfo(prev => ({
-                        ...prev,
+                        const data = {
                         userName: res.data.userName || '',
                         email: res.data.email || '',
                         address: res.data.address || '',
                         detailAddress: res.data.detailAddress || ''
-                    }));
+                    };
+                    setMemberInfo(data);                            //유저정보 저장
+                    
+                    setServerInfo({ email: res.data.email || '' }); //원본이메일 저장
                 }
             } catch (err) {
                 console.error("회원 정보 로드 실패", err);
@@ -130,6 +134,8 @@ function MyPage({ setFooterFade, setFooterMsg }) {
             await axios.put(`${import.meta.env.VITE_API_BASE_URL}/user/me`, memberInfo, {
                 headers: { Authorization: `Bearer ${token}` }
             });
+
+            setServerInfo({email: memberInfo.email}); //이메일 갱신
             
             setFooterFade('');
             setTimeout(() => { setFooterFade('footEnd'); }, 10);
@@ -169,7 +175,8 @@ function MyPage({ setFooterFade, setFooterMsg }) {
                             <div className="p-4 mb-4" style={{ background: '#f8f9fa', borderRadius: '15px', border: '1px solid #dee2e6' }}>
                                 {/* 아이디 표시 */}
                                 <Form.Group className="mb-4">
-                                    <Form.Label className="text-primary fw-bold">아이디: {currentUserName}
+                                    <Form.Label className="text-primary fw-bold">
+                                    아이디: {currentUserName.includes('KAKAO_') ? '카카오 연동 계정' : currentUserName}
                                         {currentAuth === "ROLE_ADMIN" ? <p style={{color: "red"}}>(관리자)</p> : <p style={{color: "black"}}>(일반인)</p>}
                                     </Form.Label>
                                 </Form.Group>
@@ -178,7 +185,7 @@ function MyPage({ setFooterFade, setFooterMsg }) {
                                 <Form.Group className="mb-4 position-relative">
                                     <Form.Label className="text-dark fw-bold d-flex justify-content-between align-items-center">
                                         이메일
-                                        <span className="text-muted fw-normal small">현재: {currentEmail}</span>
+                                        <span className="text-muted fw-normal small">현재: {serverInfo.email}</span>
                                     </Form.Label>
                                     <Form.Control 
                                         name="email" 

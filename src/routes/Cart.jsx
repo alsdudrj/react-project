@@ -34,6 +34,14 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
     const dispatch = useDispatch();                                            //state변경함수 사용을 위해 불러옴
 
 
+    //카카오 주소 훅에서 주소가 선택되었을 때 Cart 컴포넌트의 userAddress 업데이트
+    useEffect(() => {
+        if (address) {
+            setUserAddress(address);
+        }
+    }, [address]);
+
+
     /* ======================================== */
     /* ==== 로그인한 유저의 기본 주소를 불러옴 ==== */
     useEffect(() => {
