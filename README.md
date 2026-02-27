@@ -1,16 +1,21 @@
-# React + Vite
+# Shoes Shop Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 소개
+신발 쇼핑몰 웹 서비스의 프론트엔드 입니다.  
+React + Vite 기반 SPA입니다.
 
-Currently, two official plugins are available:
+## 기술 스택
+- React
+- Vite
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 주요 기능
+- 회원가입 / 로그인
+- 상품 목록 조회
+- 상품 상세 페이지
+- 장바구니
+- 주문 기능
+- 관리자 상품 관리
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 실행 방법
+npm install
+npm run dev
