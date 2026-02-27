@@ -20,8 +20,8 @@ React + Vite 기반 SPA입니다.
 [링크](https://react-project-14mq.vercel.app/)
 
 ### Hosting Server
-- 프론트엔드: Vercel
+- Vercel
 
 ## 실행 방법
-npm install
-npm run dev
+- npm install
+- npm run dev
