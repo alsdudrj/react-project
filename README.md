@@ -16,6 +16,12 @@ React + Vite 기반 SPA입니다.
 - 주문 기능
 - 관리자 상품 관리
 
+## 호스팅 주소
+[링크](https://react-project-14mq.vercel.app/)
+
+### Hosting Server
+- 프론트엔드: Vercel
+
 ## 실행 방법
 npm install
 npm run dev
