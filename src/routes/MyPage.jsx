@@ -14,10 +14,13 @@ function MyPage({ setFooterFade, setFooterMsg }) {
 
     const [fade] = useFadeAnimation();                                  //애니메이션 커스텀 훅
     const [showWithdrawModal, setShowWithdrawModal] = useState(false);  //회원탈퇴 모달
+    const [showWithDeleteModal, setShowWithDeleteModal] = useState(false);  //회원삭제 모달
     const [token, userRole] = useToken();                               //유저정보 확인을 위한 Custom Hook
     const [handleAddress, address, isOpen, setIsOpen] = useKakaoAddress();   //카카오주소 목록 불러오기를 위한 Custom Hook
 
     const [serverInfo, setServerInfo] = useState({email: ''});          //원본 email 저장
+    const [members, setMembers] = useState([]);  //전체 유저 목록
+    const [selectedMember, setSelectedMember] = useState(''); //선택된 회원 ID 저장
 
     const [alertMsg, setAlertMsg] = useState('');
     const [ok, setOk] = useState('');
@@ -91,6 +94,26 @@ function MyPage({ setFooterFade, setFooterMsg }) {
         fetchUserData();
     }, [token]);
 
+
+    /* ==================================================== */
+    /* =============관리자용 전체 유저목록 불러오기============= */ 
+    const fetchMemberList = useCallback(async () => {
+        if (currentAuth !== "ROLE_ADMIN") return;
+
+        try{
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user/admin`,{
+                headers: {Authorization: `Bearer ${token}`}
+            });
+
+            setMembers(res.data); //받아온 유저목록 저장
+        } catch(err){
+            console.error("회원 목록 로드 실패", err);
+        }
+    }, [currentAuth, token]);
+    useEffect(() => {
+        fetchMemberList();
+    }, [fetchMemberList]);
+
     
     /* ============================================== */
     /* =============유저데이터 변경값을 저장============= */ 
@@ -159,6 +182,38 @@ function MyPage({ setFooterFade, setFooterMsg }) {
             draw('👋 탈퇴가 완료되었습니다.')
         } catch (err) {
             console.error(err);
+        }
+    };
+
+
+    /* ================================= */
+    /* =============회원삭제============= */ 
+    const onWithDelete = async () => {
+        if(!selectedMember){
+            setFooterFade('');
+            setTimeout(() => { setFooterFade('footEnd'); }, 10);
+            setFooterMsg("⚠️ 회원을 선택하세요");
+
+            return;
+        }
+
+        try{
+            await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/user/admin/${selectedMember}`, {
+                headers: {Authorization: `Bearer ${token}`}
+            });
+
+            setFooterFade('');
+            setTimeout(() => { setFooterFade('footEnd'); }, 10);
+            setFooterMsg("✔️ 회원삭제가 완료되었습니다.");
+
+            setSelectedMember(''); //선택 초기화
+            fetchMemberList();     //삭제 후 회원목록 다시 불러오기
+        }catch(err){
+            console.error("회원삭제 실패" + err);
+
+            setFooterFade('');
+            setTimeout(() => { setFooterFade('footEnd'); }, 10);
+            setFooterMsg("⚠️ 회원삭제 실패 : " + err);
         }
     };
 
@@ -252,6 +307,34 @@ function MyPage({ setFooterFade, setFooterMsg }) {
                                 <h5 className="text-dark mb-3 fw-bold">바로가기</h5>
                                 <p className="text-secondary small">메인 화면으로 돌아가 쇼핑을 계속하세요.</p>
                                 <Button variant="outline-secondary" size="sm" onClick={() => navigate('/')}>메인으로 돌아가기</Button>
+
+                                {/*관리자용 삭제버튼*/}
+                                {userRole === 'ROLE_ADMIN' && (
+                                <div className="mt-3 mb-3" style={{ border: '1px dotted red', padding: '10px' }}>
+                                    <p style={{color : 'red', fontSize : '13px'}}>관리자 메뉴</p>
+                                        <Form.Group style={{ flex: 1 }} className="size-anchor">
+                                            <Form.Select 
+                                                name="member" 
+                                                value={selectedMember} 
+                                                onChange={(e) => setSelectedMember(e.target.value)}
+                                            >
+                                                <option>삭제할 회원 선택</option>
+                                                {
+                                                    members.map((m) => (
+                                                        <option key={m.email} value={m.id}>
+                                                            {m.userName} ({m.email})
+                                                        </option>
+                                                    ))
+                                                }
+                                            </Form.Select>
+                                        </Form.Group>
+                                        <div className="d-flex justify-content-center gap-2">
+                                            <Button variant="danger" onClick={() => setShowWithDeleteModal(true)}>
+                                                회원 삭제하기
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </Col>
                     </Row>
@@ -265,6 +348,16 @@ function MyPage({ setFooterFade, setFooterMsg }) {
                     onAction={onWithdraw} 
                     Msg='진짜 탈퇴할꺼임?'
                     okMsg='탈퇴한다'
+                />
+            }
+
+            {/*회원삭제 모달*/}
+            {showWithDeleteModal && 
+                <AlertModal 
+                    setShowAlertModal={setShowWithDeleteModal} 
+                    onAction={onWithDelete} 
+                    Msg='진짜 삭제할꺼임?'
+                    okMsg='삭제한다'
                 />
             }
 
