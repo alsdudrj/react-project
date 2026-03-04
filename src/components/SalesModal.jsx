@@ -114,14 +114,14 @@ const SalesModal = ({
                                         headers: { Authorization: `Bearer ${token}` }
                                     });
 
+                                    //응답받은 tid(결제 고유번호)와 주문 정보를 로컬 스토리지에 임시 저장
                                     if (res.data.tid) {
                                         localStorage.setItem("tid", res.data.tid);
+                                        localStorage.setItem("partner_order_id", res.data.partner_order_id);
                                     }
 
                                     //카카오 결제 페이지 리다이렉트
                                     if(res.data.next_redirect_pc_url) {
-                                        localStorage.setItem("tid", res.data.tid);
-                                        localStorage.setItem("partner_order_id", res.data.partner_order_id);
                                         window.location.href = res.data.next_redirect_pc_url;
                                     }
                                 } catch (err) {

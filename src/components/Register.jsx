@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useKakaoAddress } from "../hooks/KakaoAddress";
 import DaumPostcode from 'react-daum-postcode';
 
+/**
+ * 회원가입 모달 컴포넌트
+ */
 const Register = ({setShowRegister, setFooterFade, setFooterMsg}) => {
 
     const [showModal, setShowModal] = useModalAnimation();

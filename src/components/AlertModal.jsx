@@ -2,11 +2,15 @@ import { useState } from "react";
 import { useModalAnimation } from "../hooks/ModalAnimation";
 import { Button, Modal } from "react-bootstrap";
 
+/**
+ * 범용 알림/확인 모달 컴포넌트
+ */
 const AlertModal = ({setShowAlertModal, onAction, Msg, okMsg}) => {
     const [showModal, setShowModal] = useModalAnimation();  //Modal 애니메이션
 
     return(
         <>
+        {/* 모달 전체 배경 */}
         <div className={`black-bg ${showModal}`}>
             <div
                 className="modal"
@@ -17,6 +21,7 @@ const AlertModal = ({setShowAlertModal, onAction, Msg, okMsg}) => {
                     }
                 }}
             >
+                {/* 모달 창 콘텐츠 */}
                 <Modal.Dialog 
                 className={`white-bg ${showModal}`}
                 onClick={(e) => e.stopPropagation()}

@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * 상품 사이즈 필터링 폼 컴포넌트
+ */
 const FilterForm = ({setShowLogin, showRegister, setShowRegister}) => {
     const navigate = useNavigate();
 
@@ -19,7 +22,7 @@ const FilterForm = ({setShowLogin, showRegister, setShowRegister}) => {
         <div className="filter-overlay">
             <Form>
                 <Form.Group className="mb-3 d-flex align-items-center gap-2" controlId="select">
-                    {/*최소사이즈*/}
+                    {/* 최소사이즈 */}
                     <Form.Select 
                     value={minSize}
                     onChange={(e) => {
@@ -48,6 +51,7 @@ const FilterForm = ({setShowLogin, showRegister, setShowRegister}) => {
                     >
                         <option>사이즈</option>
                         {
+                            //선택한 최소 사이즈(minSize) 이상의 값들만 옵션으로 노출
                             sizeArr.filter((v) => Number(v) >= Number(minSize))
                             .map((v, i) => {
                                 return(

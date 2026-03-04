@@ -76,8 +76,9 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
     /* ====detail페이지 접속시 해당페이지의 상품 id를 sessionStorage에 넣음==== */
     useEffect(() => {
         if(item){
-        let localItem = JSON.parse(sessionStorage.getItem('watchItem')) || [];
-        localItem.unshift(item.id)
+        
+        let localItem = JSON.parse(sessionStorage.getItem('watchItem')) || [];  //기존 저장된 리스트를 가져오거나 없으면 빈 배열 생성
+        localItem.unshift(item.id)  //새 상품 ID를 맨 앞에 추가
 
         let set = [...new Set(localItem)];  //배열 중복 제거
         set = set.slice(0, 5);              //배열을 5개까지만 저장
@@ -146,7 +147,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                         <p>제조: {item.origin}</p>
                         <p>{new Intl.NumberFormat('ko-KR').format(item.price)}원</p>
 
-                        {/*사이즈 선택*/}
+                        {/* 사이즈 선택 */}
                         {item.sizeStocks && (
                             <div className="mb-3">
                                 <label htmlFor="sizeSelect" className="form-label">사이즈 선택</label>
@@ -166,7 +167,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                             </div>
                         )}
 
-                        {/*장바구니 추가*/}
+                        {/* 장바구니 추가 */}
                         {token &&
                             <Button variant="outline-success" onClick={() => {
                                 if (!selectedSize) {
@@ -201,7 +202,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                             </Button>
                         }
 
-                        {/*관리자용 삭제버튼*/}
+                        {/* 관리자용 버튼 */}
                         {userRole === 'ROLE_ADMIN' && (
                             <div className="mt-3 mb-3" style={{ border: '1px dotted red', padding: '10px' }}>
                                 <p style={{color : 'red', fontSize : '13px'}}>관리자 메뉴</p>
@@ -218,7 +219,7 @@ const Detail = ({shoes, setFooterFade, setFooterMsg}) => {
                     </div>
                 </div>
 
-                {/*일정 시간 후 없어지는 요소*/}
+                {/* 일정 시간 후 없어지는 요소 */}
                 {alertDiv == true ? 
                     <div className="alert alert-warning" id="sale">
                         2초이내 결제시 할인

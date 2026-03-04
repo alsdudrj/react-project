@@ -8,7 +8,7 @@ import axios from "axios";
 
 function AddProduct({setFooterFade, setFooterMsg}) {
     const navigate = useNavigate();
-    const {id} = useParams(); //URL 파라미터에서 id 추출
+    const {id} = useParams();   //URL 파라미터에서 id 추출
     const isEditMode = !!id;    //URL에 id가 있으면 수정, 없으면 등록
 
     const [fade, setFade] = useFadeAnimation();                     //페이지 애니메이션 custom hook
@@ -255,7 +255,7 @@ function AddProduct({setFooterFade, setFooterMsg}) {
 
                 const { data: urlData } = supabase.storage.from('item').getPublicUrl(fileName);
 
-                finalImgUrl = urlData.publicUrl;
+                finalImgUrl = urlData.publicUrl;    //업로드된 실제 URL 획득
             }
 
             //전송할 데이터

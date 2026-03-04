@@ -35,7 +35,7 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFil
                     </Nav>
                 }
 
-                {/*버튼*/}
+                {/* 버튼 */}
                 <Nav className="ms-auto headerName" style={{ width: "auto", paddingRight: "15%", textAlign: "right" }}>
                     <div className="login-anchor d-flex gap-2">
                         {userRole === 'ROLE_ADMIN' &&
@@ -58,7 +58,7 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFil
                                 }}
                                 >로그아웃</Button>
 
-                                {/*내정보 폼*/}
+                                {/* 내정보 폼 */}
                                 <span 
                                     style={{ color: 'white', cursor: 'pointer', fontWeight: 'bold' }}
                                     onClick={() => setShowMyPage(!showMyPage)}
@@ -69,7 +69,7 @@ const Header = ({showLogin, setShowLogin, showRegister, setShowRegister, showFil
                             )
                         }
 
-                        {/*로그인 폼*/}
+                        {/* 로그인 폼 */}
                         {showLogin && 
                         <LoginForm 
                             setShowLogin={setShowLogin} 

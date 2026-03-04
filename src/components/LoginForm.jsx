@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 import { useLogin } from "../hooks/Login";
 import axios from "axios";
 
-
+/**
+ * 로그인 모달/페이지 내에 렌더링되는 폼 컴포넌트
+ */
 const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, setFooterMsg, onLoginSuccess}) => {
     const navigate = useNavigate();
 
@@ -43,6 +45,7 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, 
         <>
         <div className="login-overlay">
             <Form>
+                {/* 아이디 입력 영역 */}
                 <Form.Group className="mb-3" controlId="Id">
                     <Form.Control type="id" placeholder="아이디" 
                     value={userName}
@@ -50,12 +53,15 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, 
                     />
                 </Form.Group>
 
+                {/* 비밀번호 입력 영역 */}
                 <Form.Group className="mb-3" controlId="Password">
                     <Form.Control type="password" placeholder="패스워드"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     />
                 </Form.Group>
+
+                {/* 로그인 유지 및 로그인 버튼 */}
                 <Form.Group className="d-flex justify-content-between align-items-center" controlId="Checkbox">
                     <Form.Check 
                     type="checkbox" 
@@ -75,6 +81,7 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, 
                     <span>또는</span>
                 </div>
 
+                {/* 회원가입 버튼 */}
                 <div className="d-grid gap-2 mt-1">
                     <Button variant="outline-danger" size="lg"
                     onClick={() => { 
@@ -85,7 +92,7 @@ const LoginForm = ({setShowLogin, showRegister, setShowRegister, setFooterFade, 
                     </Button>
                 </div>
                 
-                {/*소셜로그인 버튼*/}
+                {/* 소셜로그인 버튼 */}
                 <div className="social-divider">
                     <span>또는</span>
                 </div>

@@ -18,7 +18,7 @@ const Sidebar = (props) => {
         
         //검사 기준을 sessionStorage로 변경
         const result = localItemId.map(id =>             //sessionStorage값을 id로 뽑음
-            props.shoes.find(item => item.id === id)            //뽑은 id중 shoes에 있는 id가 일치하는 값을 저장
+            props.shoes.find(item => item.id === id)     //뽑은 id중 shoes에 있는 id가 일치하는 값을 저장
         ).filter(Boolean);                               //v => Boolean(v) / undifined의 경우 false로 바꿔줌 / filter(false) >> 제거
 
         setItem(result);
@@ -43,6 +43,8 @@ const Sidebar = (props) => {
                 <p style={{ cursor: "pointer" }} onClick={() => setShowItem(true)}>🔽</p> 
             }
             </div>
+
+            {/* 최근 본 상품 리스트 렌더링 */}
             {
                 showItem == true ?
                 item.map((e, i) => {

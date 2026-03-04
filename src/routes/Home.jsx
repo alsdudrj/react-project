@@ -54,6 +54,7 @@ const Home = (props) => {
     /* ====메인페이지 슬라이드 이미지==== */
     useEffect(() => {
         const timer = setInterval(() => {
+            //(현재번호 + 1)을 이미지 개수로 나눈 나머지값으로 순환
             setPictureValue((prev) => (prev + 1) % imgCount);
         }, 5000);
 
@@ -68,7 +69,7 @@ const Home = (props) => {
     /* =============JSX구간============= */ 
     return(
         <>
-        <div className={`start ${fade}`}> {/*애니메이션 추가*/}
+        <div className={`start ${fade}`}> {/* 애니메이션 추가 */}
             <div className="main-bg">
                 <div className="slide-container" 
                 style={{ 

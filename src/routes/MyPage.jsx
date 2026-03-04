@@ -12,15 +12,15 @@ import DaumPostcode from 'react-daum-postcode';
 function MyPage({ setFooterFade, setFooterMsg }) {
     const navigate = useNavigate();
 
-    const [fade] = useFadeAnimation();                                  //애니메이션 커스텀 훅
-    const [showWithdrawModal, setShowWithdrawModal] = useState(false);  //회원탈퇴 모달
+    const [fade] = useFadeAnimation();                                      //애니메이션 커스텀 훅
+    const [showWithdrawModal, setShowWithdrawModal] = useState(false);      //회원탈퇴 모달
     const [showWithDeleteModal, setShowWithDeleteModal] = useState(false);  //회원삭제 모달
-    const [token, userRole] = useToken();                               //유저정보 확인을 위한 Custom Hook
-    const [handleAddress, address, isOpen, setIsOpen] = useKakaoAddress();   //카카오주소 목록 불러오기를 위한 Custom Hook
+    const [token, userRole] = useToken();                                   //유저정보 확인을 위한 Custom Hook
+    const [handleAddress, address, isOpen, setIsOpen] = useKakaoAddress();  //카카오주소 목록 불러오기를 위한 Custom Hook
 
-    const [serverInfo, setServerInfo] = useState({email: ''});          //원본 email 저장
-    const [members, setMembers] = useState([]);  //전체 유저 목록
-    const [selectedMember, setSelectedMember] = useState(''); //선택된 회원 ID 저장
+    const [serverInfo, setServerInfo] = useState({email: ''});              //원본 email 저장
+    const [members, setMembers] = useState([]);                             //전체 유저 목록
+    const [selectedMember, setSelectedMember] = useState('');               //선택된 회원 ID 저장
 
     const [alertMsg, setAlertMsg] = useState('');
     const [ok, setOk] = useState('');
@@ -110,6 +110,8 @@ function MyPage({ setFooterFade, setFooterMsg }) {
             console.error("회원 목록 로드 실패", err);
         }
     }, [currentAuth, token]);
+
+    //주소 검색 완료 시 상태 업데이트
     useEffect(() => {
         fetchMemberList();
     }, [fetchMemberList]);

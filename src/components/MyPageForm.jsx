@@ -4,6 +4,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLogout } from "../hooks/Logout";
 
+/**
+ * 마이페이지 내 비밀번호 변경 및 프로필 요약 컴포넌트
+ */
 const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) => {
     const navigate = useNavigate();
     const [nowPassword, setNowPassword] = useState("");
@@ -15,6 +18,10 @@ const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) =
     const [alertMsg, setAlertMsg] = useState('');
     const [ok, setOk] = useState('');
 
+
+    /**
+     * 비밀번호 변경 처리 함수
+     */
     const handlePasswordChange = async (e) => {
         e.preventDefault();
 
@@ -51,6 +58,7 @@ const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) =
         }
 
         try {
+            //서버 통신 (API 호출)
             const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             const res = await axios.post(
                 `${import.meta.env.VITE_API_BASE_URL}/user/change-password`, 
@@ -58,7 +66,7 @@ const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) =
                     currentPassword: nowPassword,
                     newPassword: newPassword 
                 },
-                { headers: { Authorization: `Bearer ${token}` } }
+                { headers: { Authorization: `Bearer ${token}` } }   //인증 토큰 전달
             );
 
             if (res.status === 200) {
@@ -100,6 +108,7 @@ const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) =
             </div>
 
             <Form onSubmit={handlePasswordChange}>
+                {/* 현재 비밀번호 */}
                 <Form.Group className="mb-3 nowPassword-anchor" controlId="newPassword">
                     <Form.Control 
                         type="password" 
@@ -116,6 +125,7 @@ const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) =
                     }
                 </Form.Group>
                 
+                {/* 새 비밀번호 */}
                 <Form.Group className="mb-3 password-anchor" controlId="newPassword">
                     <Form.Control 
                         type="password" 
@@ -132,6 +142,7 @@ const MyPageForm = ({setShowMyPage, displayName, setFooterFade, setFooterMsg}) =
                     }
                 </Form.Group>
 
+                {/* 새 비밀번호 확인 */}
                 <Form.Group className="mb-4 passwordOk-anchor" controlId="confirmPassword">
                     <Form.Control 
                         type="password" 

@@ -96,7 +96,7 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
         <>
             <Container fluid className={`start ${fade} px-5`}>
 
-                {/*제목 및 주소 입력 영역*/}
+                {/* 제목 및 주소 입력 영역 */}
                 <Row className="align-items-center mb-3">
                     <Col>
                         <h1 className="text-start m-0" style={{ fontWeight: '700' }}>🛒장바구니이다</h1>
@@ -136,7 +136,7 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                 </Row>
                 <hr/>
 
-                {/*체크박스 영역*/}
+                {/* 체크박스 영역 */}
                 <div className="d-flex align-items-center mb-3" style={{ paddingLeft: '10px' }}>
                     <input 
                         type="checkbox" 
@@ -203,7 +203,7 @@ const Cart = ({setFooterFade, setFooterMsg}) => {
                     
                 <hr/>
 
-                {/*상품 카드 영역*/}
+                {/* 상품 카드 영역 */}
                 <div style={{ width: "80%" }}>
                     <div className="cart-grid">
                         {
